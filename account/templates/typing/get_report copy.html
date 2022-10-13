@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    
+    }
+    
+    td, th {
+      border: 3px solid #dddddd;
+      text-align: left;
+      padding: 5px;
+    }
+    
+
+    </style>
+
+</head>
+
+<body>
+	<pdf:language name="arabic"/> 
+	<h1 style="text-align: center; font-size: 25px;">Quotation Report </h1>
+    <h2>From : {{from}}</h2> <h2> To : {{to}}</h2>
+
+
+
+ <h1>Prepared By : {{user}}</h1>
+
+    <table>
+      <tr style="font-weight:500;font-size: 12px; ">
+        <th>No:</th>
+        <th>Date & Time</th>
+        <th>Company</th>
+        <th>Total</th>
+      </tr>
+  {% for i in quotation  %}
+  <tr>
+    <td>{{i.quote_num }}</td>
+    <td>{{i.created_at}}</td>
+    <td>{{i.company}}</td>
+    <td>{{i.total_inc_vat}}</td>
+  </tr>
+  {% endfor %}
+
+
+  <tr style="font-weight:500;font-size: 16px; ">
+    <td colspan="2"></td>
+    <td>Total Amount</td>
+    <td>{{total}}</td>
+
+  </tr>
+      </table>
+   <br>
+  
+      <br>
+
+
+
+
+
+</body>
+
+</html>

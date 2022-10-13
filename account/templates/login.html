@@ -1,0 +1,101 @@
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Typing | Login Page</title>
+  {% comment %} <link rel="stylesheet" href="/assets/css/login.css"> {% endcomment %}
+  
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
+  <style>
+
+	.a_box{
+		position: relative;
+	}
+	.alert {
+	  padding: 20px;
+	  background-color: #f44336;
+	  color: white;
+	  position: absolute;
+	  z-index: 5;
+	  -webkit-transition: all 0.3s ease;
+	  -webkit-transform: translate(-50%, -50%);
+	}
+	
+	.closebtn {
+	  margin-left: 15px;
+	  color: white;
+	  font-weight: bold;
+	  float: right;
+	  font-size: 22px;
+	  line-height: 20px;
+	  cursor: pointer;
+	  transition: 0.3s;
+	}
+	
+	.closebtn:hover {
+	  color: black;
+	}
+	</style>
+
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+{% if messages %}
+<div class="a_box">
+	<div class="alert">
+		{% for message in messages %}
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+		<strong>{{ message }}</strong> 
+		{% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="form-structor">
+
+	<div class="signup">
+
+		<h2 class="form-title" id="signup"><span></span>Log In</h2>
+	
+			{% comment %} <input type="text" class="input" placeholder="Name" />
+			<input type="email" class="input" placeholder="Email" />
+			<input type="password" class="input" placeholder="Password" /> {% endcomment %}
+		
+			<form  method="post">
+				<div class="form-holder">
+					{% csrf_token %}
+				 	{{form.as_p}}
+				</div>
+			   <button class="submit-btn" type="submit">Login</button>
+			</form>
+	
+		{% comment %} <button class="submit-btn">Sign up</button> {% endcomment %}
+	</div>
+	{% comment %} <div class="login slide-up">
+		<div class="center">
+			<h2 class="form-title" id="login"><span>or</span>Log in</h2>
+			<div class="form-holder">
+				<input type="email" class="input" placeholder="Email" />
+				<input type="password" class="input" placeholder="Password" />
+			</div>
+			<button class="submit-btn">Log in</button>
+		</div>
+	</div> {% endcomment %}
+</div>
+<!-- partial -->
+  <script  src="/assets/css/script.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,441 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+    .stats-icon i{
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div id="app">
+          
+            <!-- /. NAV SIDE  -->
+            <div id="main">
+                <header class="mb-3">
+                    <a href="#" class="burger-btn d-block d-xl-none">
+                        <i class="bi bi-justify fs-3"></i>
+                    </a>
+                </header>
+                
+            <div class="page-heading">
+                <h3>DashBoard </h3>
+              <a href="{% url 'quotations'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Quotations</a>
+              <a href="{% url 'create_quotation'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Create Quotation</a>
+              <a href="{% url 'invoices'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Invoices</a>
+              
+              <a href="{% url 'create_invoice'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Create Invoice</a>
+              <a href="{% url 'all_items'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Items</a>
+              <a href="{% url 'users'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Users</a>
+              <a href="{% url 'all_base_companies'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Base Companies</a>
+            </div>
+            <div class="page-content">
+                <section class="row">
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon purple">
+                                                    <i class="bi bi-chat-square-dots-fill"> </i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <a href="{% url 'quotations'%}">
+                                                <h6 class="text-muted font-semibold">Quotations</h6>
+                                                <h6 class="font-extrabold mb-0">{{quotation}}</h6>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon blue">
+                                                    <i class="bi bi-diagram-3-fill"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <a href="{% url 'invoices'%}">
+                                                <h6 class="text-muted font-semibold">Invoice</h6>
+                                                <h6 class="font-extrabold mb-0">{{invoice}}</h6>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon green">
+                                                    <i class="bi bi-diagram-2"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <a href="{% url 'all_items'%}">
+                                                <h6 class="text-muted font-semibold">Items</h6>
+                                                <h6 class="font-extrabold mb-0">{{items}}</h6>
+                                            </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon red">
+                                                    <i class="bi bi-people-fill"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                            <a href="{% url 'users'%}" class='sidebar-link'>
+                                                <h6 class="text-muted font-semibold">Users</h6>
+                                                <h6 class="font-extrabold mb-0">{{ user.count }}</h6>
+                                            </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Details</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> {% endcomment %}
+                        <div class="row">
+                            <div class="col-12 col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Qutotation Report</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row from_to">
+                                        <div class="col-md-6 ">
+                                            <label> From </label>
+                                            <input id="from_date" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label> To     </label>
+                                            <input id="to_date" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mt-3"> 
+                                            <label for="user">Choose a user:</label>
+                                            <select name="select_user" id="select_user" class="form-control">
+                                                {% for us in user %}  
+                                                <option value="{{us.username}}">{{us.username}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 13px;"> 
+                                            <button class="btn btn-primary mt-4" name="Edit" onclick="getReport()" > Get Report </button>
+                                        </div>
+                                        
+
+                                        <div class="col-md-6 mt-3"> 
+                                            <label for="user">Choose a base:</label>
+                                            <select name="q_select_user" id="q_select_base" class="form-control">
+                                                {% for us in all_base_companies %}  
+                                                <option value="{{us.id}}">{{us.company_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 13px;"> 
+                                            <button class="btn btn-primary mt-4" onclick="AllQReport()" > All Report </button>
+                                        </div>
+                                        <div class="row"> 
+                                            <label style="margin-top: 20px;" for="user">Choose base + customer:</label>
+                                            <div class="col-md-6 mt-3"> 
+                                            
+                                                <select name="q_select_user" id="q_select_cus" class="form-control">
+                                                    {% for cp in all_companies %}  
+                                                    <option value="{{cp.id}}">{{cp.company_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6"> 
+                                                <button class="btn btn-primary mt-4" onclick="AllQCusWiseReport()" > All Report </button>
+                                            </div>
+                                         </div>
+                             
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xl-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Invoice Report</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row from_to">
+                                        <div class="col-md-6 ">
+                                            <label> From </label>
+                                            <input id="i_from_date" class="form-control">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label> To     </label>
+                                            <input id="i_to_date" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mt-3"> 
+                                            <label for="user">Choose an user:</label>
+                                            <select name="i_select_user" id="i_select_user" class="form-control">
+                                                {% for us in user %}  
+                                                <option value="{{us.username}}">{{us.username}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 13px;"> 
+                                            <button class="btn btn-primary mt-4" name="Edit" onclick="ingetReport()" > Get Report </button>
+                                        </div>
+                                        <div class="col-md-6 mt-3"> 
+                                            <label for="user">Choose a base:</label>
+                                            <select name="i_select_user" id="i_select_base" class="form-control">
+                                                {% for us in all_base_companies %}  
+                                                <option value="{{us.id}}">{{us.company_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 13px;"> 
+                                            <button class="btn btn-primary mt-4" onclick="AllinvReport()" > All Report </button>
+                                        </div>
+                                        <div class="row"> 
+                                            <label style="margin-top: 20px;" for="user">Choose base + customer:</label>
+                                            <div class="col-md-6 mt-3"> 
+                                            
+                                                <select name="i_select_user" id="i_select_cus" class="form-control">
+                                                    {% for cp in all_companies %}  
+                                                    <option value="{{cp.id}}">{{cp.company_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6"> 
+                                                <button class="btn btn-primary mt-4" onclick="AllCusWiseReport()" > All Report </button>
+                                            </div>
+                                         </div>
+                             
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body py-4 px-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                        <img src="/static/admin_panel/images/faces/1.jpg">
+                                    </div>
+                                    <div class="ms-3 name">
+                                        <h5 class="font-bold">{{ base_user }}</h5>
+                                        <h6 class="text-muted mb-0">{{ base_profile.role }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Users</h4>
+                            </div>
+                            <div class="card-content pb-4">
+
+                                {% for us in user %}    
+                                <div class="recent-message d-flex px-4 py-3">
+                                    <div class="avatar avatar-lg">
+                                        <img src="/static/admin_panel/images/faces/4.jpg">
+                                    </div>
+                                    <div class="name ms-4">
+                                        <h5 class="mb-1">{{us.username}}</h5>
+                                        <h6 class="mb-0" style="color:black">{{us.userprofile.base_company}}</h6>
+                                        <h6 class="text-muted mb-0">Role : {{us.userprofile.role}}</h6>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                           
+                                <div class="px-4">
+                                    
+                                    <button onclick="javascript:window.location.href=`{% url 'users' %}`; return false;" class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>Users</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% comment %} <div class="card">
+                            <div class="card-header">
+                                <h4>Demo</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id=""></div>
+                            </div>
+                        </div> {% endcomment %}
+                    </div>
+                </section>
+            </div>
+
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2021 &copy; ALNOKHATHA</p>
+                        </div>
+                        <div class="float-end">
+                                <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="https://alnokhatha.com/">alnokhatha</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- /. PAGE WRAPPER  -->
+</div>
+
+<script> 
+$(document).ready(function () {
+    $('#from_date').datetimepicker({
+        format:'Y-m-d H:i:s',
+    });
+    $('#to_date').datetimepicker({
+        format:'Y-m-d H:i:s',
+    });
+    $('#i_from_date').datetimepicker({
+        format:'Y-m-d H:i:s',
+    });
+    $('#i_to_date').datetimepicker({
+        format:'Y-m-d H:i:s',
+    });
+});
+
+function getReport(){
+    var from_date = $('#from_date').val();
+    var to_date = $('#to_date').val();
+    var select_user = $('#select_user').val();
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else if (select_user == ''){
+        alert('please enter user');
+    }
+    else{
+    window.location.href='/typing/get-report/'+from_date+'/'+to_date+'/'+select_user;
+    }
+}
+
+function ingetReport(){
+    var from_date = $('#i_from_date').val();
+    var to_date = $('#i_to_date').val();
+    var select_user = $('#i_select_user').val();
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else if (select_user == ''){
+        alert('please enter user');
+    }
+    else{
+    window.location.href='/typing/get-invoice-report/'+from_date+'/'+to_date+'/'+select_user;
+    }
+    
+}
+
+
+
+function AllinvReport(){
+    var from_date = $('#i_from_date').val();
+    var to_date = $('#i_to_date').val();
+    var select_b = $('#i_select_base').val();
+ 
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else{
+    window.location.href='/typing/all-invoice-report/'+from_date+'/'+to_date+'/'+select_b;
+    }
+} 
+
+function AllCusWiseReport(){
+    var from_date = $('#i_from_date').val();
+    var to_date = $('#i_to_date').val();
+    var select_base = $('#i_select_base').val();
+    var select_cus = $('#i_select_cus').val();
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else{
+    window.location.href='/typing/all-invoice-report-cus/'+from_date+'/'+to_date+'/'+select_base+'/'+select_cus;
+    }
+}
+
+
+
+
+
+function AllQReport(){
+    var from_date = $('#from_date').val();
+    var to_date = $('#to_date').val();
+    var select_b = $('#q_select_base').val();
+ 
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else{
+    window.location.href='/typing/all-quotation-report/'+from_date+'/'+to_date+'/'+select_b;
+    }
+} 
+
+function AllQCusWiseReport(){
+    var from_date = $('#from_date').val();
+    var to_date = $('#to_date').val();
+    var select_base = $('#q_select_base').val();
+    var select_cus = $('#q_select_cus').val();
+    if (from_date == ''){
+        alert('please enter from date');
+    }
+    else if (to_date == ''){
+        alert('please enter to date');
+    }
+    else{
+    window.location.href='/typing/all-quotation-report-cus/'+from_date+'/'+to_date+'/'+select_base+'/'+select_cus;
+    }
+}
+</script>
+{% endblock %}
+
+

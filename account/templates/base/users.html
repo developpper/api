@@ -1,0 +1,200 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+        <h1> hello </h1>
+        {% comment %} <div class="col-md-9"> {% endcomment %}
+     <div id="main">
+            <div class="page-heading">
+                <div id="success_div"></div>
+                    <h3>Users</h3>
+                    {% comment %} <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Create Bill</a> {% endcomment %}
+                    {% comment %} <a href="#" data-bs-toggle="modal" data-bs-target="#AddCatModal" class="btn btn-primary float-left btn-sm" style="margin-left:10px">Add Category</a> {% endcomment %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary float-left btn-sm pr-5"  data-bs-toggle="modal" data-bs-target="#cosourceModdal">Add Users</button>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                            {% comment %} <div class="search"> 
+                                <i class="fa fa-search"></i> 
+                                <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                                <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+            </div>
+            <h4>Customer Details</h4>
+            <table id='cltable' class="table table-bordered table-striped table-hover" >
+                <thead>
+                    <tr>
+                        <th>first Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Role</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for us in user_objs %}
+                    <tr id="user-{{us.id}}">      
+                        <td>{{us.first_name}}</td>
+                        <td>{{us.last_name}}</td>
+                        <td>{{us.username}}</td>
+                        <td>{{us.email}}</td>
+                        <td>{{us.userprofile.mobile}}</td>
+                        <td>{{us.userprofile.role}}</td>
+                   
+
+                        <td><input type="button" onClick="deleteUser({{us.id}})" name="Delete" value="Delete" class="btn btn-danger"></td> 
+     
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<div class="modal fade " id="cosourceModdal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="user-form">
+                {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body coso_modal">
+                            <div class="form-group mb-4">
+                                <input type="text" name="first_name" class="form-control " id="first_name"  placeholder="First Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="last_name" class="form-control " id="last_name"  placeholder="Last Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="username" class="form-control " id="username"  placeholder="User Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="password" class="form-control " id="password"  placeholder="Password" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="email"   class="form-control" id="email"  placeholder="Email" />
+                            </div>
+                            <div class="form-group mb-4">	
+                                <input type="text" name="mobile"   class="form-control" id="mobile"  placeholder="Mobile" />
+                            </div>
+                      
+                            <div class="form-group mb-4">	
+                                <select class="form-control input-sm" id="role" name="role">
+                                    <option value="typist">Typist</option>
+                                    <option value="admin">Admin </option>
+                                  </select>
+                            </div>
+                                <br>
+                        </div> 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <input type="submit"  class="btn btn-primary" name="contact-submit" id="add_user" value="Submit">
+                        </div>
+            </form>     
+        </div>  
+    </div>
+</div>
+  <script>
+$(document).ready(function(){
+    $('#cotable').DataTable({
+    });
+    $('#cltable').DataTable({
+    });
+});     
+    //   $(document).on('submit' , '#user-form',function(e){
+    //       e.preventDefault();
+    //       alert('kasim');
+        // var cos_name = $('#cos_name').val();
+        // var cos_activity = $('#cos_activity').val();
+        // var cos_mobile =  $('#cos_mob').val();
+        // var cos_website =  $('#cos_website').val();
+        // var cos_sender_id =  $('#cos_sender_id').val();
+        // var cos_sms_api =  $('#cos_sms_api').val();
+        // var cos_sms_campaigns =  $('#cos_sms_campaigns').val();
+        // var cos_sms_routid =  $('#cos_sms_routid').val();
+        // var cos_email_host =  $('#cos_email_host').val();
+        // var cos_email_port =  $('#cos_email_port').val();
+        // var cos_email_username =  $('#cos_email_username').val();
+        // var cos_email_password =  $('#cos_email_password').val();
+        // var cos_email_fromaddress =  $('#cos_email_fromaddress').val();
+        // var cos_email_fromname =  $('#cos_email_fromname').val();
+        //   $.ajax({
+        //       type:'POST',
+        //       url:'/api/add-coso/',
+        //       data:{cos_name:cos_name,
+        //         cos_activity:cos_activity,
+        //         cos_mobile:cos_mobile,
+        //         cos_website:cos_website,
+        //         cos_sender_id:cos_sender_id,
+        //         cos_sms_api:cos_sms_api,
+        //         cos_sms_campaigns:cos_sms_campaigns,
+        //         cos_sms_routid:cos_sms_routid,
+        //         cos_email_host:cos_email_host,
+        //         cos_email_port:cos_email_port,
+        //         cos_email_username:cos_email_username,
+        //         cos_email_password:cos_email_password,
+        //         cos_email_fromaddress:cos_email_fromaddress,
+        //         cos_email_fromname:cos_email_fromname,
+        //         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        //     },
+        //       success:function(data)
+        //       {  
+        //             alert(data.message)
+        //             $("#coso-form")[0].reset();
+        //             $('#cosourceModdal').modal('hide');
+        //             location.reload();
+        //       }
+
+        //   });
+    //   });
+
+
+    $('#user-form').on("submit", function(event){   
+           event.preventDefault();  
+                $.ajax({  
+                    url:"{% url 'add_user' %}",  
+                    type: "POST",  
+                    data:  new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData:false,   
+                    success:function(data){  
+                        location.reload(); 
+                    }  
+                });  
+      });
+
+      function deleteUser(id) {
+        var action = confirm("Are you sure you want to delete this user?");
+        if (action != false) {
+            $.ajax({
+                url: '{% url "delete_user" %}',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // alert(data);
+                    if (data.deleted) {
+                    $("#cltable #user-" + id).remove();
+                    }
+                }
+            });
+        }
+}
+
+  </script>
+{% endblock %}
+
+

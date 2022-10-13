@@ -1,0 +1,5 @@
+docker build --tag main .
+docker run --publish 8009:8009 main
+
+mysql
+docker pull mysql/mysql-server:8.0

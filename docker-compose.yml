@@ -1,0 +1,32 @@
+version: '3'
+
+# services:
+#   db:
+#     image: mysql:5.7
+#     ports:
+#       - '3306:3306'
+#     environment:
+#        MYSQL_DATABASE: 'typ_01250122'
+#        MYSQL_USER: 'root'
+#        MYSQL_PASSWORD: ''
+#        MYSQL_ROOT_PASSWORD: ''
+
+services:
+  mysql-docker:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: docker_db
+    ports:
+      - "3306:3306"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8009
+    volumes:
+      - .:/my_app_dir
+    ports:
+      - "8009:8009"
+    depends_on:
+      - db

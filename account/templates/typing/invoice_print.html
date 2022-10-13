@@ -1,0 +1,220 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+
+    @font-face {
+	font-family: "DejaVuSans";
+	src: url('/assets/admin_panel/DejaVuSans.ttf');
+    }
+    body {
+    font-family: "DejaVuSans";
+    text-align: center;
+	}
+
+
+.invoice-box {
+	max-width: 800px;
+	margin: auto;
+	padding: 0 30px 30px 30px;
+	border: 1px solid #eee;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	font-size: 16px;
+	line-height: 24px;
+	{% comment %} font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; {% endcomment %}
+	color: #555;
+} 
+ .invoice-box table {
+	width: 100%;
+	line-height: inherit;
+	text-align: left;
+} 
+.invoice-box table td {
+	padding: 5px;
+	vertical-align: bottom;
+}
+.invoice-box table tr td:nth-child(2) {
+	text-align: right;
+}
+.invoice-box table tr.top table td {
+	{% comment %} padding-bottom: 20px; {% endcomment %}
+}
+{% comment %} .invoice-box table tr.top table td.title {
+	font-size: 5px;
+	line-height: 15px;
+	color: #333;
+} {% endcomment %}
+.invoice-box table tr.information table td {
+	{% comment %} padding-bottom: 40px; {% endcomment %}
+}
+.invoice-box table tr.heading td {
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	font-weight: bold;
+}
+.invoice-box table tr.details td {	
+	{% comment %} padding-bottom: 20px; {% endcomment %}
+}
+.invoice-box table tr.item td {
+	border-bottom: 1px solid #eee;
+}
+.invoice-box table tr.item.last td {
+	border-bottom: none;
+}
+.invoice-box table tr.total td:nth-child(2) {
+	border-top: 2px solid #eee;
+	font-weight: bold;
+}
+@media only screen and (max-width: 600px) {
+	.invoice-box table tr.top table td {
+		width: 100%;
+		display: block;
+		text-align: center;
+	}
+	.invoice-box table tr.information table td {
+		width: 100%;
+		display: block;
+		text-align: center;
+	}
+}
+/** RTL **/
+.invoice-box.rtl {
+	direction: rtl;
+	{% comment %} font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; {% endcomment %}
+}
+.invoice-box.rtl table {
+	text-align: right;
+}
+.invoice-box.rtl table tr td:nth-child(2) {
+	text-align: left;
+}
+.head_p td{
+	font-size:12px;
+	font-weight: 600;
+	color:black;
+	text-align: center;
+	background-color:#AAAAA9;
+	{% comment %} background-color:#1f5664;
+	background-color:#FEFFEC; {% endcomment %}
+	padding-top:100px;
+}
+.foot_p td{
+	font-size:14px;
+	font-weight: 800;
+	color:black;
+	text-align: center;
+	{% comment %} background-color:#9b7922; {% endcomment %}
+	{% comment %} background-color:#1f5664; {% endcomment %}
+	 background-color:#AAAAA9;
+}
+		</style>
+	</head>
+
+	<body>
+		<pdf:language name="arabic"/> 
+        <h1 style="text-align: center; font-size: 25px;">Invoice</h1>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td class="title">
+									{% comment %} <img src="/static/{{base_company.logo}}" style="width: 100%; max-width: 300px margin-top: -50px; " /> {% endcomment %}
+									<img src="https://system.typingvisa.com/static/{{base_company.logo}}" style="width: 100%; max-width: 300px; padding-top:105px;" />
+									
+								</td>
+								<td style="margin-left:150px; font-size:13px; font-weight:600;">
+									Invoice #: {{quotation.quote_num}}<br />
+									Date    : {{quotation.created_at|date:"d M, Y" }}<br />
+									ID    : {{quotation.q_slug}}<br />
+									Paid By : {{quotation.q_p_by}} 
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td style="font-size:13px; font-weight:600;">
+									{{base_company.company_name}} <br /> 
+									{{base_company.address_line_1}}<br />
+									{{base_company.address_line_2}} <br /> <br /> <br />
+								</td>
+								<td style="font-size:13px;">
+									<span style="font-weight: 600;">Company : {{quotation.company_name|default_if_none:""}}<br /></span>
+									Company Person : {{quotation.person|default_if_none:""}} <br />
+									Email : {{quotation.email|default_if_none:""}} <br />
+									Mobile : {{quotation.mobile|default_if_none:""}} <br/> 
+									Address : {{quotation.address|default_if_none:"" }} <br/> 
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+            <table class="table-bordered">
+                    <tr class="head_p" > 
+                        <td >Sr</td>
+                        <td colspan="3">Description</td>
+                        <td>Qty</td>
+                        <td colspan="2">Rate</td>
+                        <td colspan="2">Amount Ex Vat</td>
+                        <td>Vat Rate</td>
+                        <td>Vat Amount</td>
+                        <td colspan="2">Total Amount Inc Vat</td>
+                    </tr>
+                <tbody>
+                	{% for i in quotation.invoice_entry_saved_set.all %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td  colspan="3">{{i.desc}}</td>
+                            <td >{{i.qty}}</td>
+                            <td colspan="2">{{i.rate}}</td>
+                            <td colspan="2">{{i.ex_vat}}</td>
+                            <td>{{i.vat}}</td>
+                            <td>{{i.vat_amount}}</td>
+                            <td colspan="2" style="text-align: center;">{{i.total_inc_vat}}</td>
+                        </tr>
+                    {% endfor %} 
+					<tr style="height:50px;"></tr>
+                 	<tr class="foot_p">
+                        <td colspan="7" style="font-weight: 600; text-align:center;">Total Invoice Value</td>
+                        <td  class="text-right" style="font-weight: 600;"  colspan="2">{{quotation.total_exc_vat}}</td>
+                        <td style="font-weight: 600;">  </td>
+                        <td style="font-weight: 600;">{{quotation.total_vat_amt}}</td>
+                        <td colspan="2" style="font-weight: 600;">AED {{quotation.total_inc_vat}}</td>
+                    </tr>
+					<tr style="height:50px; font-size:13px;">
+						<td colspan="7" style="font-weight: 600; text-align:left;">Total In Words : {{t_in_word}} Dhirhams Only.</td>
+						<td colspan="6" style="font-weight: 600; text-align:left;">Remarks : 
+							{% if quotation.remarks %}
+							{{ quotation.remarks }}
+							{% else %}
+							{% endif %}
+						</td>
+					</tr>
+                </tbody>
+            </table>
+			
+		</div>
+		<div style="text-align: left;">
+		
+
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<h2>{{base_company.company_name}}</h2>
+
+			{% comment %} <h2 style="margin-left:570px; padding-top:-32px;">Customer's Approval		 </h2> {% endcomment %}
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,397 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+            <div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                <form id="add_pro_form">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">                   
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                
+                                    <div class="col-4">
+                                        <div class="search-box" id="b_search">
+                                            <div class="lable">Product Name</div>
+                                            <input type="text" class="brand form-control" id="p_name" name="p_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="search-box" id="c_search">
+                                            <div class="lable">Product Code</div>
+                                            <input type="text" class="pcode form-control" name="p_code" id="p_code">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <div class="search-box" id="model">
+                                            <div class="lable">Model Number</div>
+                                            <input type="text" class="pmodel form-control" name="p_model" id="p_model">
+                                        </div>
+                                    </div>
+                                
+                                </div>  
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                
+                                    <div class="col-4">
+                                        <div class="search-box" id="stock">
+                                            <div class="lable">Stock</div>
+                                            <input type="text" class="p_stock form-control" id="p_stock" name="p_stock">
+                                        </div>
+                                    </div>
+                                <div class="col-4">
+                                        <div class="search-box" id="t_search">
+                                            <div class="lable">Price</div>
+                                            <input type="text" class="cat form-control" id="p_price" name="p_price" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="search-box" id="t_search">
+                                            <div class="lable">Selling Price</div>
+                                            <input type="text" class="form-control" id="p_oprice" name="p_oprice" required>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="lable">Brand</div>
+                                            <select id="p_brand" name="p_op" class="stock form-control">
+                                                {% for brand in base_brand %}
+                                                    <option value="{{brand.id}}">{{brand.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="lable">Category</div>
+                                            <select id="p_op" name="p_cat" class="stock form-control">
+                                                  {% for cat in base_cat %}
+                                                    <option value="{{cat.id}}">{{cat.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="lable">Sub Category</div>
+                                            <select id="p_subcat" name="p_op" class="stock form-control">
+                                                 {% for scat in base_s_cat %}
+                                                    <option value="{{scat.id}}">{{scat.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                     <div id="output"></div>
+                    <input type="hidden" name="product_id" id="product_id" />
+                    <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                            <button id="add_product" name="add-product" class="btn btn-primary add_product">Add Product</button>
+                            <button type="submit" id="edit_product" name="edit-product" class="btn btn-warning edit_products">Edit Product</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        <div class="modal fade" id="AddCatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" autocomplete="off" method="post" enctype="multipart/form-data">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group mb-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="lable">Category Name *</div>
+                                                <input type="text" class="cat form-control" name="cat_name" required>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="lable">In Stock Qty</div>
+                                                <input type="number" class="stock form-control" name="stock_item">
+                                            </div>
+                                        
+                                        </div>  
+                                    </div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="add-category" class="btn btn-primary">Add Category</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Products</h3>
+            <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Add Products</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#AddCatModal" class="btn btn-primary float-left btn-sm" style="margin-left:10px">Add Category</a>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <table id='usertable' class="table-bordered table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                        </tr>
+                                                        <th>Barcode</th>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <th>Category</th>
+                                                        <th>Model</th>
+                                                        <th>Cost</th>
+                                                        
+                                                        <th>Offer Price</th>
+                                                        <th>Mrp</th>
+                                                        <th>Stock</th>
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    </thead>
+                                                    <tbody>
+                                                       
+                                                                                                <tr class="success">
+                                                                                                    <td></td>
+                                                                                                    <td></td>
+                                                                                                    <td></td>
+                                                                                                    <td><?php echo htmlentities($result->resolution);?></td>
+                                                                                                    <td><?php echo htmlentities($result->in_out	);?></td>
+                                                                                                    <td><?php echo htmlentities($result->size);?></td>
+                                                                                                    <td><?php echo htmlentities($result->model);?></td>
+                                                                                                    <td><?php echo htmlentities($result->desc);?></td>
+                                                                                                    <td><?php echo htmlentities($result->stock);?></td>
+                                                                                                    <td><a href="#" id="<?php echo htmlentities($result->id);?>" class="update"><i class="fa fa-pencil"></i></a></td> 
+                                                                                                    <!-- <td><button type="button" name="update" class="btn btn-warning btn-xs update">Update</button></td> -->
+                                                                                                 <td><a onClick="deleteme(<?php echo htmlentities($result->id);?>)"><i  name="Delete" class="fas fa-trash"></i></a></td>
+                                                                                                </tr>
+                                                                                                <script language="javascript">
+                                                                                                    function deleteme(delid)
+                                                                                                        { 
+                                                                                                            if(confirm("Do you want to delete user?")){
+                                                                                                                window.location.href='products.php?del_products=' +delid+'';
+                                                                                                                return true;
+                                                                                                            }
+                                                                                                        }
+                                                                                                </script>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        
+                    </div>
+                </div>
+             
+            </section>
+            </div>
+    
+   
+</div>
+
+
+
+<script>    
+
+ $(document).ready(function(){
+     $(document).on('click', '.add_product', function(){
+             $.ajax({
+                type : "POST", 
+                url: "{% url 'add_product' %}",
+                data: {
+                 product_name : $('#p_name').val(),
+                 product_code : $('#p_code').val(),
+                 p_model : $('#p_model').val(),
+                 p_stock : $('#p_stock').val(),
+                 p_price : $('#p_price').val(),
+                 p_oprice : $('#p_oprice').val(),
+                 p_brand : $('#p_brand').val(),
+                 p_cat : $('#p_cat').val(),
+                 p_subcat : $('#p_subcat').val(),
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 dataType: "json",
+                },
+                
+                success: function(data){
+                   $('#output').html(data.msg) /* response message */
+                       $('#add_pro_form')[0].reset();
+                    $('#AddProductModal').hide();
+                    alert(data.msg)
+                },
+         
+                failure: function() {
+                    
+                }
+            });
+        });
+
+ });
+{% comment %} 
+            $('#b_search input[type="text"]').on("keyup input", function(){
+            /* Get input value on change */
+            var inputVal = $(this).val();
+            var operation = "brand_search";
+            var csrf = $('#csrf_data').val();
+            var resultDropdown = $(this).siblings("#b_result");
+            if(inputVal.length){
+            $.ajax({
+                url:"fetch/fetch.php",
+                method:"POST",
+                data:{inputVal:inputVal,csrf:csrf, operation:operation},
+                success:function(data)
+                {  
+                resultDropdown.html(data);
+                }
+            });
+            } else{
+                resultDropdown.empty();
+            }
+            }); {% endcomment %}
+
+
+        // Set search input value on click of result item
+        {% comment %} $(document).on("click", "#b_result p", function(){
+            $(this).parents("#b_search").find('input[type="text"]').val($(this).text());
+            $(this).parent("#b_result").empty();   
+        }); {% endcomment %}
+
+
+
+
+// category search
+                {% comment %} $('#c_search input[type="text"]').on("keyup input", function(){
+                /* Get input value on change */
+                var inputVal = $(this).val();
+                var operation = "cat_search";
+                var brand = $('#p_brand').val();
+                // var brand = "kasim";
+                var csrf = $('#csrf_data').val();
+                var resultDropdown = $(this).siblings("#c_result");
+                if(inputVal.length){
+                $.ajax({
+                    url:"fetch/fetch.php",
+                    method:"POST",
+                    data:{inputVal:inputVal,csrf:csrf, operation:operation, brand:brand},
+                    success:function(data)
+                    {  
+                    
+                    resultDropdown.html(data);
+                    }
+                });
+                } else{
+                    resultDropdown.empty();
+                }
+            }); {% endcomment %}
+
+
+            // Set search input value on click of result item
+            {% comment %} $(document).on("click", "#c_result p", function(){
+                $(this).parents("#c_search").find('input[type="text"]').val($(this).text());
+                $(this).parent("#c_result").empty();   
+            }); {% endcomment %}
+
+// type search
+        {% comment %} $('#t_search input[type="text"]').on("keyup input", function(){
+        /* Get input value on change */
+        var inputVal = $(this).val();
+        var operation = "type_search";
+        var cat = $('#p_cat').val();
+        // var brand = "kasim";
+        var csrf = $('#csrf_data').val();
+        var resultDropdown = $(this).siblings("#t_result");
+        if(inputVal.length){
+          $.ajax({
+            url:"fetch/fetch.php",
+            method:"POST",
+            data:{inputVal:inputVal,csrf:csrf, operation:operation, cat:cat},
+            success:function(data)
+            {  
+            
+              resultDropdown.html(data);
+            }
+          });
+        } else{
+            resultDropdown.empty();
+        }
+    });
+ {% endcomment %}
+
+        // Set search input value on click of result item
+        {% comment %} $(document).on("click", "#t_result p", function(){
+            $(this).parents("#t_search").find('input[type="text"]').val($(this).text());
+            $(this).parent("#t_result").empty();   
+        }); {% endcomment %}
+
+
+        // for product insert *****************************************                                                    
+
+
+
+            {% comment %} $(document).ready(function(){
+
+                $('#usertable').DataTable({
+                });
+                $('#invtable').DataTable({
+                });
+
+            $(document).on('click', '#app_pro_btn', function(){
+                $('#add_pro_form')[0].reset();
+                $('#add_product').show();
+                $('#edit_product').hide();
+            });
+
+            $(document).on('click', '.add_product', function(){
+                alert('working');
+            }); {% endcomment %}
+
+         
+
+
+            {% comment %} }); {% endcomment %}
+
+
+
+
+
+        </script>
+{% endblock %}
+
+

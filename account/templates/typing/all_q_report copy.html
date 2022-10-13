@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    
+    }
+    td, th {
+      border: 3px solid #dddddd;
+      text-align: left;
+      padding: 5px;
+    }
+</style>
+
+</head>
+
+<body>
+	<pdf:language name="arabic"/> 
+ 
+	<h1 style="text-align: center; font-size: 25px;">Quotation Report : KTT</h1>
+
+
+  <table>
+    <tr>
+      <td>Prepared For : <span style="color:red">All Users</span></td>
+      <td>From : <span style="color:red">{{from}}</span> / To : <span style="color:red">{{to}}</span> </td>
+    </tr>
+    <tr>
+      <td>Total Amount Paid By Cash : <span style="color:red">{{by_cash}}</span></td>
+      <td>Grand Total Amount : <span style="color:red">{{total}}</span></td>
+    </tr>
+    <tr>
+      <td>Total Amount Paid By Bank : <span style="color:red">{{by_bank}}</span></td>
+      <td>Total Cost : <span style="color:red">{{total_cost}}</span></td>
+    </tr>
+    <tr>
+      <td>Total Amount Paid By Credit : <span style="color:red">{{by_credit}}</span></td>
+      <td>Total Profit : <span style="color:red">{{total_profit}}</span></td>
+    </tr>
+  
+  </table>
+
+  {% for i in quotation  %}
+    <h2>Quotation : {{i.quote_num }}   | #Id : {{i.q_slug}} |  Date & Time : {{i.created_at}}  | Company : {{i.company_name}} | Paid By : {{i.q_p_by}} | Created By : {{i.user}}</h2>
+  <table>
+    <tr style="font-weight:500;font-size: 9px; background-color:#FFFFCC; ">
+      <th>Sr:</th>
+      <th>Desc</th>
+      <th>Qty</th>
+      <th>Rate</th>
+      <th>Vat</th>
+      <th>Total</th>
+      <th>Cost</th>
+      <th>Total Cost</th>
+      <th>Total</th>
+    </tr>
+  {% for q in i.quote_entry_saved_set.all %}
+  <tr>
+    <td>{{forloop.counter }}</td>
+    <td>{{q.desc}}</td>
+    <td>{{q.qty}}</td>
+    <td>{{q.rate}}</td>
+    <td>{{q.vat}}</td>
+    <td>{{q.total_inc_vat}}</td>
+    <td>{{q.cost}}</td>
+    <td>{{q.total_cost}}</td>
+    <td>{{q.profit}}</td>
+  </tr>
+{% endfor %}  
+
+<tr style="font-weight:500;font-size: 12px;background-color:#FFFFCC; ">
+  <td colspan="3">Remarks : {{i.remarks}}</td>
+  <td colspan="2">Total Amount : {{i.total_inc_vat}}</td>
+  <td colspan="2">Total Cost : {{i.total_from_total_cost}}</td>
+  <td colspan="2">Total Profit : {{i.total_from_profit}}</td>
+</tr>
+      </table>
+      <br><br><br>
+  {% endfor %}
+
+
+
+   <br>
+  
+      <br>
+
+
+
+
+
+</body>
+
+</html>

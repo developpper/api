@@ -1,0 +1,342 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+    #table1 {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      #table1 td, #table1 th {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      
+      #table1 tr:nth-child(even){background-color: #f2f2f2;}
+      
+      #table1 tr:hover {background-color: #ddd;}
+      
+      #table1 th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+      }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+
+       
+
+      
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Create Bill</h3>
+            {% comment %} <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Create Bill</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#AddCatModal" class="btn btn-primary float-left btn-sm" style="margin-left:10px">Add Category</a>
+         {% endcomment %}
+        
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group mb-3">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                        </div>
+                                                        <div class="col-4">
+
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="search-box" id="b_search">
+
+                                                                <input type="text" class="brand form-control" id="c_name" name="c_name" placeholder="Company Name">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="c_search">
+
+                                                                <input type="text" class="pcode form-control" name="p_code" id="p_code" placeholder="Person Name">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="model">
+
+                                                                <input type="text" class="pmodel form-control" name="p_model" id="p_model" placeholder="Email">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="model">
+
+                                                                <input type="text" class="pmodel form-control" name="p_model" id="p_model" placeholder="Mobile Number">
+                                                            </div>
+                                                            <div class="search-box mt-3">
+                                                                <select class="form-control input-sm" name="pay_method">
+                                                                  <option value="cash">By Cash</option>
+                                                                  <option value="bank">By Bank</option>
+                                                                </select>
+                                                              </div>
+                                                        </div>
+                                                    </div>  
+
+                                                    <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-md pr-5" >Add Item</a>
+
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                  
+                                    <table  id="table1">
+                                        <tr>
+                                            <th>Sr</th>
+                                            <th>Description</th>
+                                            <th>Qty</th>
+                                            <th>Rate</th>
+                                            <th>Exc Vat</th>
+                                            <th>Vat</th>
+                                            <th>Vat Amount</th>
+                                            <th>Total Inc Vat</th>
+                                            <th>Del</th>
+                                        </tr>
+                                        <tfoot>
+                                            <tr>
+                                              <th colspan="4"> <span style="display:table;margin:0 auto;"> Total Quotation Value </span></th>
+                                              <th id="t_exe"></th>
+                                              <th ></th>
+                                              <th id="q_vat"></th>
+                                              <th id="t_inc_vat"></th>
+                                            </tr>
+
+                                      </table>
+
+                                    <a href="#" id="save_bill" class="btn btn-primary btn-md pr-5 mt-5" style="width:15vw; margin-left:79%">Save</a>        
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        
+                    </div>
+                </div>
+             
+            </section>
+            </div>
+    
+   
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+    {% comment %} <form id="add_pro_form"> {% endcomment %}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-box" id="b_search">
+                                <div class="lable">Description</div>
+                                <input type="text" class="brand form-control mo_val" id="i_desc" name="desc">
+                            </div>
+                            <div class="row">
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Rate</div>
+                                    <input type="text" class="pcode form-control mo_val" id="i_rate" id="p_code">
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Qty</div>
+                                    <input type="text" class="pcode form-control mo_val" id="i_qty" id="p_code">
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Vat</div>
+                                    <input type="text" class="pcode form-control mo_val" id="i_vat" id="p_code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+         <div id="output"></div>
+        <input type="hidden" name="product_id" id="product_id" />
+        <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button id="add_qitem" name="add-product" class="btn btn-primary add_product">Add Item</button>
+       </div>
+        {% comment %} </form> {% endcomment %}
+    </div>
+    </div>
+</div>
+
+
+
+<div id="result"></div>
+
+<script>
+
+
+    $(document).ready(function () {
+        myFunction();
+        getTotal();
+        function myFunction() {  
+        $('.t_roe').remove(); 
+        $.ajax({
+            url: "{% url 'get_qitem' %}",
+            type: 'get',
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            dataType: "json",
+            success: function (result) {
+                console.log(result.data);
+                $.each(result.data, function(index, value){
+                    var ex_vat = value.qty * value.rate;
+                    var vat_amt = ex_vat * (value.vat / 100);
+                    var total_inc_vat = ex_vat + vat_amt;
+                    var html = "<tr class='t_roe'><td>"+(index+1)+"</td><td>"+value.desc+"</td><td>"+value.qty+"</td><td>"+parseFloat(value.rate).toFixed(2)+"</td><td class='ex_vat'>"+ex_vat.toFixed(2)+"</td><td >"+value.vat+'%'+"</td><td class='vat_amt'>"+vat_amt.toFixed(2)+"</td><td class='t_in_vat'>"+total_inc_vat.toFixed(2)+"</td><td class='.q_del'><button class='btn btn-sm btn-danger delete-item' data-item="+value.vat+">del</button></td></tr>";
+                    {% comment %} var html = "<tr class='t_roe'><td>"+(index+1)+"</td><td>"+value.desc+"</td><td>"+value.qty+"</td><td>"+parseFloat(value.rate).toFixed(2)+"</td><td class='ex_vat'>"+ex_vat.toFixed(2)+"</td><td >"+value.vat+'%'+"</td><td class='vat_amt'>"+vat_amt.toFixed(2)+"</td><td class='t_in_vat'>"+total_inc_vat.toFixed(2)+"</td><td class='.q_del'>"+total_inc_vat.toFixed(2)+"</td></tr>"; {% endcomment %}
+                    $("#table1").find('tbody').append(html);
+                });
+            }
+        });
+    }
+
+    function getTotal() { 
+    setTimeout( function(){
+        var total_e_vat = 0;
+        $(".ex_vat").each(function(){
+            total_e_vat += parseFloat($(this).text());
+        });
+        $('#t_exe').text((total_e_vat).toFixed(2));
+
+        var vat_amt = 0;
+        $(".vat_amt").each(function(){
+            vat_amt += parseFloat($(this).text());
+        });
+        $('#q_vat').text((vat_amt).toFixed(2));
+
+        var t_in_vat = 0;
+        $(".t_in_vat").each(function(){
+            t_in_vat += parseFloat($(this).text());
+        });
+        $('#t_inc_vat').text((t_in_vat).toFixed(2));
+
+    }  , 50 );
+
+}
+
+    $(document).on("click", "#add_qitem", function(){
+        i_desc = $('#i_desc').val();
+        $.ajax({
+                type : "POST", 
+                url: "{% url 'add_qitem' %}",
+                data: {
+                 i_desc : $('#i_desc').val(),
+                 i_rate : $('#i_rate').val(),
+                 i_qty : $('#i_qty').val(),
+                 i_vat : $('#i_vat').val(),
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 dataType: "json",
+                },
+                success: function(data){
+                 /*  $('#output').html(data.msg) 
+                    $('#AddProductModal').hide(); */
+                    $("#AddProductModal").modal("hide");  
+                    
+                    $(".mo_val").val(''); 
+                    myFunction();
+                    getTotal();
+                   /* alert(data.msg);*/
+                },
+
+                failure: function() {
+                    
+                }
+            });
+    });
+})
+
+$(document).on("click", "#add_qitem", function(){
+    i_desc = $('#i_desc').val();
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'add_qitem' %}",
+            data: {
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_qty : $('#i_qty').val(),
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+                $(".mo_val").val(''); 
+                myFunction();
+                getTotal();
+               /* alert(data.msg);*/
+            },
+
+            failure: function() {
+                
+            }
+        });
+});
+
+$(document).on("click", "#save_bill", function(){
+    i_desc = $('#i_desc').val();
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'add_qitem' %}",
+            data: {
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_qty : $('#i_qty').val(),
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+                $(".mo_val").val(''); 
+                myFunction();
+               /* alert(data.msg);*/
+            },
+            failure: function() {   
+            }
+        });
+});
+</script>
+{% endblock %}
+
+

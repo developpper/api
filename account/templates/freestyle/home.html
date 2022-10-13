@@ -1,0 +1,211 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+{% endblock %}
+
+
+{% block content %}
+
+    <div id="app">
+            <!-- /. NAV SIDE  -->
+            <div id="main">
+                <header class="mb-3">
+                    <a href="#" class="burger-btn d-block d-xl-none">
+                        <i class="bi bi-justify fs-3"></i>
+                    </a>
+                </header>
+                
+            <div class="page-heading">
+                {% comment %} <h3>DashBoard</h3> {% endcomment %}
+            </div>
+            <div class="page-content">
+                <section class="row">
+                   <div class="col-md-12">
+                    
+                    <div class="card">
+                        <div class="card-header">      
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="search-box" id="com_name">
+                                            <h5> Second Party :   </h5>
+                                            <input type="text" id="second_party" class="brand form-control" name="document_id" placeholder="Second Party" autocomplete="off">
+                                        </div>
+                                        <h5> Date :   </h5> 
+                                        <input type="text" class="brand form-control" id="date" autocomplete="off">
+                                        <br />
+                                        <div class="search-box" id="com_name">
+                                            <h5> Document Type :   </h5>
+                                            <input type="text" id="document_type" class="brand form-control" name="c_name" placeholder="Document Type" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="search-box" id="com_name">
+                                            <h5> Document Id :   </h5>
+                                            <input type="text" id="document_id" class="brand form-control" name="document_id" placeholder="Document Id" autocomplete="off">
+                                        </div>
+                                        <div class="search-box mt-3" id="c_search">
+                                            <h5> Nationality :   </h5>
+                                            <input type="text" class="pcode form-control" name="p_code" id="nationality" placeholder="Nationality">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                            <h6>Bike Description: </h6>
+
+                                            {% comment %} <h5> Bike Type Year :   </h5> {% endcomment %}
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="total_length" placeholder="Total Length">
+                                            </div>                           
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="overall_width" placeholder="Overall Width">
+                                            </div>                                     
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="max_depth" placeholder="Maximum Depth">
+                                            </div>                             
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="total_load" placeholder="Total Load">
+                                            </div> 
+                                            
+                                            <h6 class="mt-5">Engine Specification: </h6>
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="engine_type" placeholder="Engine Type">
+                                            </div>                           
+                                            <div class="mt-3" >    
+                                                <input type="text" class="pcode form-control" name="p_code pt-5" id="engine_power" placeholder="Engine Power">
+                                            </div>    
+                                    </div>
+                                    <div class="col-md-3">
+                                        <br>
+                                            {% comment %} <h5> Bike Type Year :   </h5> {% endcomment %}
+                                         <div class="mt-2" >    
+                                            <input type="text" class="pcode form-control" name="p_code mt-5" id="bike_type" placeholder="Bike Type">
+                                        </div>                            
+                                        <div class="mt-3" >    
+                                            <input type="text" class="pcode form-control" name="p_code mt-5" id="manf_year" placeholder="Year Of Manufacture">
+                                        </div>                                      
+                                        <div class="mt-3" >    
+                                            <input type="text" class="pcode form-control" name="p_code mt-5" id="bike_color" placeholder="Bike Color">
+                                        </div>                             
+                                        <div class="mt-3" >    
+                                            <input type="text" class="pcode form-control" name="p_code mt-5" id="featured_number" placeholder="Featured Number">
+                                         </div>
+                                         
+                                         <br>
+                                         <br>
+                                         <br>
+                                         {% comment %} <br> {% endcomment %}
+
+                                         <div class="mt-3" >    
+                                            <input type="text" class="pcode form-control" name="p_code pt-5" id="number_of_engine" placeholder="Number Of Engine">
+                                        </div>                           
+                                        <div class="mt-3" >    
+                                            <input type="text" class="pcode form-control" name="p_code pt-5" id="engine_sr_no" placeholder="Engine Serial Number">
+                                        </div>   
+                                    </div>
+                                  
+                                </div>  
+
+                                <div class="row">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-2">
+                                         <a href="#" id="save_bill" class="btn btn-primary btn-md pr-5 mt-5" style="width:15vw; margin-left:79%">Save & Print</a>        
+                                    </div>
+                                 
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                   </div>
+                </section>
+            </div>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2021 &copy; ALNOKHATHA</p>
+                        </div>
+                        <div class="float-end">
+                                <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="">demo</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- /. PAGE WRAPPER  -->
+</div>
+
+<script>
+    $(document).ready(function () {
+    
+        $('#date').datetimepicker({
+            format:'Y-m-d H:i:s',
+        });
+
+
+        $(document).on("click", "#save_bill", function(){
+            var second_party = $('#second_party').val();
+            var nationality = $('#nationality').val();
+            var document_id = $('#document_id').val();
+            var date = $('#date').val();
+            var document_type = $('#document_type').val();
+            var total_length = $('#total_length').val();
+            var overall_width = $('#overall_width').val();
+            var max_depth = $('#max_depth').val();
+            var total_load = $('#total_load').val();
+            var bike_type = $('#bike_type').val();
+            var manf_year = $('#manf_year').val();
+            var bike_color = $('#bike_color').val();
+            var engine_type = $('#engine_type').val();
+            var engine_power = $('#engine_power').val();
+            var number_of_engine = $('#number_of_engine').val();
+            var engine_sr_no = $('#engine_sr_no').val();
+             //alert(msg);
+             $.ajax({
+                type : "POST", 
+                url: "{% url 'add_freestyle' %}",
+                data:{ 
+                    second_party: second_party , 
+                    nationality: nationality, 
+                    document_id:document_id, 
+                    date:date, 
+                    document_type:document_type, 
+                    total_length:total_length, 
+                    overall_width:overall_width, 
+                    max_depth:max_depth, 
+                    total_load:total_load, 
+                    bike_type:bike_type, 
+                    manf_year:manf_year, 
+                    bike_color:bike_color, 
+                    engine_type:engine_type, 
+                    engine_power:engine_power, 
+                    number_of_engine:number_of_engine, 
+                    engine_sr_no:engine_sr_no, 
+                    csrfmiddlewaretoken:'{{ csrf_token }}' },
+             
+                success: function(data){
+                    console.log(data);
+                      testValue = (JSON.stringify(data.msg_report)).replaceAll("\"", "");
+                    $('.alert').text(testValue);
+                    $('.alert').show();
+                    location.reload();
+                },
+                failure: function() {
+                    
+                }
+            });
+         });
+
+    })
+</script>
+{% endblock %}
+
+

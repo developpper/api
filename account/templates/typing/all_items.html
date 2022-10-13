@@ -1,0 +1,388 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+.search input {
+    height: 34px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4
+}
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid blue
+}
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+.search button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    height: 31px;
+    width: 110px;
+    background: blue;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>All Items</h3>
+            {% if base_profile.role == "admin" %}
+            <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Add Item</a>
+            {% endif %}
+          <a href="{% url 'create_invoice'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Create Invoice</a>
+          <a href="{% url 'create_quotation'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Create Quotation</a>
+          <a href="{% url 'edit_all_item_excel'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Edit In Excel</a>
+
+            <div class="row">
+                <div class="col-md-4">
+               
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                    <!-- <div class="search"> 
+                        <i class="fa fa-search"></i> 
+                        <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                        <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <table id='cltable' class="table table-bordered table-striped table-hover" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id#</th>
+                                                            <th>Item</th>
+                                                            <th>Cost</th>
+                                                            <th>Rate</th>
+                                                            <th>Vat</th>
+                                                            {% if base_profile.role == "admin" %}
+                                                            <th>Editable</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                            {% endif %}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for us in items %}
+                                                        <tr id="qt-{{us.id}}">      
+                                                            <td> {{us.id}}</td>
+                                                            <td> {{us.desc}}</td>
+                                                            <td>{{us.cost}}</td>
+                                                            <td>{{us.rate}}</td>
+                                                            <td>{{us.vat}}%</td>
+                                                            {% if base_profile.role == "admin" %}
+                                                          
+
+                                                            {% if us.editable == None %}
+                                                            <td class="switchToggle">
+                                                                <input type="checkbox" id="{{us.id}}" class="switch">
+                                                                <label for="{{us.id}}">Toggle</label>
+                                                            </td>
+                                                            {% elif us.editable == "false" %}
+                                                            <td class="switchToggle">
+                                                                <input type="checkbox" id="{{us.id}}" class="switch">
+                                                                <label for="{{us.id}}">Toggle</label>
+                                                            </td>
+                                                            {% else %}
+                                                            <td class="switchToggle">
+                                                                <input type="checkbox" id="{{us.id}}" class="switch" checked>
+                                                                <label for="{{us.id}}">Toggle</label>
+                                                            </td>
+                                                          {% endif %}
+
+                                                            <td><input type="button" onClick="editQuote({{us.id}})" name="Edit" value="Edit" class="btn btn-warning "></td> 
+                                                            <td><input type="button" onClick="deleteQuote({{us.id}})" name="Delete" value="Delete" class="btn btn-danger"></td> 
+                                                            {% endif %}
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </section>
+            </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+    {% comment %} <form id="add_pro_form"> {% endcomment %}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-box" id="b_search">
+                                <div class="lable">Description</div>
+                                <input type="text" class="brand form-control mo_val" id="i_desc" name="desc">
+                            </div>
+                            <div class="row">
+                                <div class="search-box mt-2 col-md-4">
+                                    <div class="lable">Cost</div>
+                                    <input type="number" class="pcode form-control mo_val" id="i_cost" >
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Rate</div>
+                                    <input type="number" class="pcode form-control mo_val" id="i_rate" >
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Vat</div>
+                                    <input type="number" class="pcode form-control mo_val" value="0" id="i_vat" >
+                                    <input type="hidden" id="id_input">
+                                </div>
+                                {% comment %} <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Editable</div>
+                                    <select name="select_all_item" id="select_all_item" class="form-control">
+                                        <option value="no">No</option>
+                                        <option value="yes">Yes</option>
+                                    </select>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+         <div id="output"></div>
+        <div class="modal-footer">
+                 <input type="hidden" name="product_id" id="product_id" />
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button  id="sub_button" class="btn btn-primary add_item">Add Item</button>
+       </div>
+        {% comment %} </form> {% endcomment %}
+    </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    $('.switch').click(function() {
+        var id = this.id;
+        $.ajax({
+            type : "POST", 
+            url: "{% url 'update_editable_item' %}",
+            data: {
+             id : id,
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                alert(data.msg);
+                location.reload();  
+            },
+            failure: function() {
+                
+            }
+        });
+
+ 
+    });
+
+
+    $(document).ready(function () {
+        $('#cltable').DataTable({
+            "order": [[ 0, "desc" ]]
+        });
+    });
+ 
+        function deleteQuote(id) {
+            var action = confirm("Are you sure you want to delete this user?");
+            if (action != false) {
+                $.ajax({
+                    url: '{% url "delete_all_item" %}',
+                    data: {
+                        'id': id,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.deleted) {
+                        $("#cltable #qt-" + id).remove();
+                        }
+                    },
+                    failure: function(d) {
+                        console.warn(d);
+                    }
+                }); 
+            }
+        }
+
+
+
+        function editQuote(id) {
+            var action = confirm("Are you sure you want to edit this item?");
+            if (action != false) {
+                $.ajax({
+                    type : "POST", 
+                    url: "{% url 'edit_all_item' %}",
+                    data: {
+                    'id': id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                    },
+                    success: function (data) {
+                        $("#AddProductModal").modal("show"); 
+                        $("#exampleModalLabel").text("Update Item");
+                        $("#sub_button").text("Update Item");
+                        $("#sub_button").removeClass("btn-primary add_item").addClass("btn-warning update_item");
+                        $("#i_desc").val(data.i_desc);
+                        $("#i_rate").val(data.rate);
+                        $("#i_vat").val(data.vat);
+                        $("#product_id").val(data.id);
+                        console.log(data);
+                    },
+                    failure: function(d) {
+                        console.warn(d);
+                    }
+                }); 
+            }
+        }
+  
+
+
+$(document).on("click", ".add_item", function(){
+    i_desc = $('#i_desc').val();
+    i_rate = $('#i_rate').val();
+    i_vat = $('#i_vat').val();
+    i_cost = $('#i_cost').val();
+
+    if(!i_desc){
+        alert('Please enter description');
+    }
+    else if(!i_rate){
+        alert('Please enter rate');
+    }
+    else if(!i_cost){
+        alert('Please enter cost');
+    }
+    else if(!i_vat){
+        alert('Please enter vat');
+    }
+    else{
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'add_all_item' %}",
+            data: {
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_cost : i_cost,
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+    });
+
+
+$(document).on("click", ".update_item", function(){
+    i_desc = $('#i_desc').val();
+    i_rate = $('#i_rate').val();
+    i_vat = $('#i_vat').val();
+
+    if(!i_desc){
+        alert('Please enter description');
+    }
+    else if(!i_rate){
+        alert('Please enter rate');
+    }
+    else if(!i_vat){
+        alert('Please enter vat');
+    }
+    else{
+
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'update_all_item' %}",
+            data: {
+             i_id : $('#product_id').val(),
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+
+});
+
+
+</script>
+{% endblock %}
+
+

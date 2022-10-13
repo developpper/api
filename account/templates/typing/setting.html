@@ -1,0 +1,77 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+  
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Setting</h3>
+
+            <div class="row">
+                <div class="col-md-4">
+               
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+               
+                </div>
+            </div>
+        </div>
+   
+
+
+            <div class="row">
+ 
+                <div class="col-12 col-xl-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Typing Items Edit</h4>
+                        </div>
+                        <div class="card-body">
+                            {% comment %} <div class="outerDivFull" > {% endcomment %}
+                                <div class="row">
+                               <div class="col-md-6">
+                                <h5>demo</h5>       
+                            </div>
+                               <div class="col-md-6"> 
+                                    <div class="switchToggle">
+                                        <input type="checkbox" id="switch1" checked>
+                                        <label for="switch1">Toggle</label>
+                                    </div>
+                                </div>
+                        </div>
+                                
+                               
+                                
+                                {% comment %} </div> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+<script>
+    $('#switch1').click(function() {
+        alert('demo testing');
+    });
+</script>
+
+
+
+{% endblock %}
+
+

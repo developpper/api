@@ -1,0 +1,316 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+        {% comment %} <div class="col-md-9"> {% endcomment %}
+     <div id="main">
+            <div class="page-heading">
+                <div id="success_div"></div>
+                    <h3>Users</h3>
+                     {% comment %} <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Create Bill</a> {% endcomment %}
+                    {% comment %} <a href="#" data-bs-toggle="modal" data-bs-target="#AddCatModal" class="btn btn-primary float-left btn-sm" style="margin-left:10px">Add Category</a> {% endcomment %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary float-left btn-sm pr-5" id="add_user_b">Add Users</button>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                            {% comment %} <div class="search"> 
+                                <i class="fa fa-search"></i> 
+                                <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                                <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+            </div>
+  
+            <table id='cltable' class="table table-bordered table-striped table-hover" >
+                <thead>
+                    <tr>
+                        <th>first Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Base Company</th>
+                        <th>Role</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for us in user_objs %}
+                    <tr id="user-{{us.id}}">      
+                        <td>{{us.first_name}}</td>
+                        <td>{{us.last_name}}</td>
+                        <td>{{us.username}}</td>
+                        <td>{{us.email}}</td>
+                        <td>{{us.userprofile.mobile}}</td>
+                        <td>{{us.userprofile.base_company}}</td>
+                        <td>{{us.userprofile.role}}</td>
+
+                   
+                        <td><input type="button" id="edit_btn" onClick="editUser({{us.id}})" name="Edit" value="Edit" class="btn btn-warning "></td> 
+                        <td><input type="button" onClick="deleteUser({{us.id}})" name="Delete" value="Delete" class="btn btn-danger"></td> 
+     
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<div class="modal fade " id="cosourceModdal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% comment %} <form class="us_form">
+                {% csrf_token %} {% endcomment %}
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body coso_modal">
+                            <div class="form-group mb-4">
+                                <input type="text" name="first_name" class="form-control " id="first_name"  placeholder="First Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="last_name" class="form-control " id="last_name"  placeholder="Last Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="username" class="form-control " id="username"  placeholder="User Name" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="password" class="form-control " id="password"  placeholder="Password" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="text" name="email"   class="form-control" id="email"  placeholder="Email" />
+                            </div>
+                            <div class="form-group mb-4">	
+                                <input type="text" name="mobile"   class="form-control" id="mobile"  placeholder="Mobile" />
+                            </div>
+                      
+                            <div class="form-group mb-4">	
+                                <select class="form-control input-sm" id="role" name="role">
+                                    <option value="user" id="tpst">user</option>
+                                    <option value="manager" id="tpst">manager</option>
+                                    <option value="admin" id="adm">Admin </option>
+                                  </select>
+                            </div>
+                            <div class="form-group mb-4">	
+                                <select class="form-control input-sm" id="base_company" name="base_company">
+              
+                                  </select>
+                            </div>
+                                <br>
+
+                        </div> 
+                        <div class="modal-footer">
+                            <input type="hidden" id="edit_usr_id">
+                            <button type="button" class="btn btn-secondary" id="close_btn" data-bs-dismiss="modal">Close</button>
+                            <input type="button"  class="btn btn-primary add_user" name="contact-submit" id="add_user" value="Submit">
+                            <input type="button"  class="btn btn-warning update_user" name="contact-submit" id="update_user" value="Submit">
+                            
+                        </div>
+            {% comment %} </form>  {% endcomment %}
+        </div>  
+    </div>
+</div>
+  <script>
+
+    $(document).ready(function(){
+        $('#cotable').DataTable({
+        });
+        $('#cltable').DataTable({
+        });
+        $.ajax({
+            type : "GET", 
+            url: "{% url 'get_all_company_base' %}",
+            data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            dataType: "json",
+            },
+            success: function (result) {
+                console.log(result);
+                var formoption = "";
+                $.each(result.data, function(index, value) {
+                  var val = value;     
+                  formoption += "<option value='" + val.id + "'>" + val.company_name + "</option>";
+                });
+                $('#base_company').html(formoption);
+            },
+            failure: function(d) {
+                console.warn(d);
+            }
+        }); 
+    });  
+
+/*
+function getCompany() {
+
+ }
+ */
+
+ $( "#edit_btn" ).click(function() {
+    $("#base_company").removeProp("selected");
+}); 
+
+$( "#add_user_b" ).click(function() {
+    $("#cosourceModdal").modal("show"); 
+    $("#update_user").hide();
+    $("#add_user").show();
+    $(".modal-title").text("Add User"); 
+    $("#add_user").val("Add User");
+    $("#edit_usr_id").val('');
+    $("#first_name").val('');
+    $("#last_name").val('');
+    $("#username").val('');
+    $("#email").val('');
+    $("#mobile").val(''); 
+});
+   
+$( "#add_user" ).click(function() {
+   var first_name = $("#first_name").val();
+   var last_name =  $("#last_name").val();
+   var username = $("#username").val();
+   var password = $("#password").val();
+   var email = $("#email").val();
+   var mobile = $("#mobile").val();
+   var role = $("#role").val();
+   var base_company = $("#base_company").val();
+   var fd = new FormData();
+   fd.append('first_name',first_name);
+   fd.append('last_name',last_name);
+   fd.append('username',username);
+   fd.append('password',password);
+   fd.append('email',email);
+   fd.append('mobile',mobile);
+   fd.append('role',role);
+   fd.append('base_company',base_company);
+   fd.append('csrfmiddlewaretoken','{{ csrf_token }}');
+   console.log(fd);
+   $.ajax({  
+        url:"{% url 'add_user' %}",  
+        type: "POST",  
+        data:  fd,
+        contentType: false,
+        cache: false,
+        processData:false,   
+        success:function(data){
+            if (data.error){
+                alert(data.error);  
+            }
+            else{
+                location.reload(); 
+            }
+        }  
+    }); 
+});
+
+$( "#update_user").click(function() {
+    var username = $("#username").val();
+    if (username==''){
+        alert('Username Is Required');
+    }
+    else{
+    $.ajax({
+        type : "POST", 
+        url: "{% url 'update_user' %}",
+        data: {
+        'id': $('#edit_usr_id').val(),
+        'first_name': $('#first_name').val(),
+        'last_name': $('#last_name').val(),
+        'username': $('#username').val(),
+        'password': $('#password').val(),
+        'email': $('#email').val(),
+        'mobile': $('#mobile').val(),
+        'role': $('#role').val(),
+        'base_company': $('#base_company').val(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        dataType: "json",
+        },
+        success: function (data) {
+            if (data.error){
+                alert(data.error);  
+            }
+            else{
+                location.reload(); 
+            }
+        },
+        failure: function(d) {
+            console.warn(d);
+        }
+    }); 
+    }
+});
+
+function editUser(id) {   
+        var action = confirm("Are you sure you want to edit user detail?");
+        if (action != false) {
+            $("#cosourceModdal").modal("show"); 
+            $("#add_user").hide();
+            $("#update_user").show();
+            $(".modal-title").text("Edit User"); 
+            $("#add_user").val("Update User");
+            $.ajax({
+                type : "POST", 
+                url: "{% url 'user_detail' %}",
+                data: {
+                'id': id,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dataType: "json",
+                },
+                success: function (data) {
+                    $("#edit_usr_id").val(data.id);
+                    $("#first_name").val(data.first_name);
+                    $("#last_name").val(data.last_name);
+                    $("#username").val(data.username);
+                    $("#email").val(data.email);
+                    $("#mobile").val(data.mobile); 
+                    $("#base_company option[value='" + data.base_company_id + "']").attr('selected','selected');
+                    //$("#base_company option[value='" + data.base_company_id + "']").attr('selected',true);
+                   //$('#base_company').text($(this).find(":selected").attr('value' ,data.base_company_id ));
+
+                    if (data.role == 'admin'){
+                        $('#tpst').attr('selected', false);
+                        $('#adm').attr('selected', true);
+                    }
+                    else if (data.role == 'typist'){
+                        $('#adm').attr('selected', false);
+                        $('#tpst').attr('selected', true);
+                    }
+                    console.log(data);
+                },
+                failure: function(d) {
+                    console.warn(d);
+                }
+            }); 
+        }
+}
+
+
+function deleteUser(id) {
+        var action = confirm("Are you sure you want to delete this user?");
+        if (action != false) {
+            $.ajax({
+                url: '{% url "delete_user" %}',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // alert(data);
+                    if (data.deleted) {
+                        $("#cltable #user-" + id).remove();
+                    }
+                }
+            });
+        }
+}
+
+</script>
+{% endblock %}
+
+

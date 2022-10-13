@@ -1,0 +1,235 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+.search input {
+    height: 34px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4
+}
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid blue
+}
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+.search button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    height: 31px;
+    width: 110px;
+    background: blue;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Messages</h3>
+     
+          <a href="{% url 'all_companies'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Companies</a>
+          <a href="{% url 'send_message_page'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Send Messages</a>
+            <div class="row">
+                <div class="col-md-4">
+               
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                    <!-- <div class="search"> 
+                        <i class="fa fa-search"></i> 
+                        <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                        <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="col-12"></div>
+                                            <div class="card-header"></div>
+                                            <div class="card-body">
+                                            <div id="success_message" class="alert alert-success" style="display:none"></div>
+
+                                                    <table id='cltable' class="table table-bordered table-striped table-hover" >
+                                                        <thead>
+                                                            <tr>
+                                                               <th>Id#</th>
+                                                                <th>Text</th>
+                                                                <th>Mobile Number</th>
+                                                                <th>Company</th>
+                                                                <th>Report</th>
+
+                                                                {% if base_profile.role == "admin" %}
+                                                     
+                                                                {% endif %}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for us in companies %}
+                                                            <tr id="qt-{{us.id}}"> 
+                                                               <td> {{us.id}}</td>
+                                                                <td> {{us.text}}</td>
+                                                                <td> {{us.mobile_number}}</td>
+                                                                <td>{{us.company_name}}</td>
+                                                                <td>{{us.msg_report}}</td>
+
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                              
+                                                
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </section>
+            </div>
+</div>
+
+
+
+{% comment %} <div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-box" id="b_search">
+                                <div class="lable">Description</div>
+                                <input type="text" class="brand form-control mo_val" id="i_desc" name="desc">
+                            </div>
+                            <div class="row">
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Rate</div>
+                                    <input type="number" class="pcode form-control mo_val" id="i_rate" >
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Vat</div>
+                                    <input type="number" class="pcode form-control mo_val" value="0" id="i_vat" >
+                                    <input type="hidden" id="id_input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+         <div id="output"></div>
+        <div class="modal-footer">
+                 <input type="hidden" name="product_id" id="product_id" />
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button  id="sub_button" class="btn btn-primary add_item">Add Item</button>
+       </div>
+      
+    </div>
+    </div>
+</div> 
+{% endcomment %}
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#cltable').DataTable({
+            "order": [[ 0, "desc" ]]
+        });
+
+        $('#selectallboxes').click(function(event){
+            if(this.checked){
+                $('.checkboxes').each(function(){
+                    this.checked = true;                      
+                });
+            }
+            else{
+                $('.checkboxes').each(function(){
+                    this.checked = false;                      
+                });
+            }
+        });
+        $.ajax({
+            type : "GET", 
+            url: "{% url 'send_message' %}",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dataType: "json",
+            },
+            success: function(data){
+                //alert(data);
+                //console.log(data);
+            },
+            failure: function() {
+            }
+        });
+
+    });
+
+    function sendMessage(id) {
+        var action = confirm("Are you sure you want to send Message?");
+        if (action != false) {
+            $.ajax({
+                type : "POST", 
+                url: "{% url 'send_message' %}",
+                data: {
+                    msg : $('#msg').val(),
+                    c_id : id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                },
+                success: function(data){
+
+                },
+                failure: function() {
+                    
+                }
+            });
+        }
+    }
+
+</script>
+{% endblock %}
+
+

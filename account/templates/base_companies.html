@@ -1,0 +1,441 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+.search input {
+    height: 34px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4
+}
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid blue
+}
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+.search button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    height: 31px;
+    width: 110px;
+    background: blue;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>All Base Companies</h3>
+          
+            <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-sm pr-5" >Add Base Company</a>
+   
+            <div class="row">
+                <div class="col-md-4">
+               
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                    <!-- <div class="search"> 
+                        <i class="fa fa-search"></i> 
+                        <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                        <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <table id='cltable' class="table table-bordered table-striped table-hover" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id#</th>
+                                                            <th>Company Name</th>
+                                                            <th>Base URL</th>
+                                                            <th>Address</th>
+                                                            <th>Website</th>
+                                                            <th>Email</th>
+                                                            <th>Mobile</th>
+                                                            {% if base_profile.role == "admin" %}
+
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                            {% endif %}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for us in companies %}
+                                                        <tr id="qt-{{us.id}}">      
+                                                            <td> {{us.id}}</td>
+                                                            <td> {{us.company_name}}</td>
+                                                            <td> {{us.base_url}}</td>
+                                                            <td>{{us.address_line_1}}{{us.address_line_2}}</td>
+                                                            <td>{{us.website}}</td>
+                                                            <td>{{us.email}}</td>
+                                                            <td>{{us.mobile}}</td>
+                                              
+                                                            <td><input type="button" onClick="editQuote({{us.id}})" name="Edit" value="Edit" class="btn btn-warning "></td> 
+                                                            <td><input type="button" onClick="deleteQuote({{us.id}})" name="Delete" value="Delete" class="btn btn-danger"></td> 
+                                                  
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </section>
+            </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+    {% comment %} <form id="add_pro_form"> {% endcomment %}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Base Company</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row"> 
+                                <div class="col-md-6">
+                                    <div class="lable">Company Name :</div>
+                                    <input type="text" class="brand form-control mo_val" id="company_name">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="lable">Company Logo :</div>
+                                    <input type="file" id="logo" name="logo" accept="image/png, image/jpeg">
+                                </div>
+                                <br> <br> <br> 
+                                <div class="col-md-6">
+                                    <div class="lable">Address Line 1 :</div>
+                                    <input type="text" class="brand form-control mo_val" id="address_1">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="lable">Address Line 2 :</div>
+                                    <input type="text" class="brand form-control mo_val" id="address_2">
+                                </div>
+                                <br> <br> <br> 
+                                <div class="col-md-6">
+                                    <div class="lable">Email :</div>
+                                    <input type="text" class="brand form-control mo_val" id="email">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="lable">Mobile :</div>
+                                    <input type="text" class="brand form-control mo_val" id="mobile">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="lable">Website :</div>
+                                    <input type="text" class="brand form-control mo_val" id="website">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="lable">Base_URL * :</div>
+                                    <input type="text" class="brand form-control mo_val" id="base_url">
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+         <div id="output"></div>
+        <div class="modal-footer">
+                 <input type="hidden" name="base_id" id="base_id" />
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button  id="sub_button" class="btn btn-primary add_item">Add Base Company</button>
+       </div>
+        {% comment %} </form> {% endcomment %}
+    </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#cltable').DataTable({
+        });
+    });
+ 
+    function deleteQuote(id) {
+        var action = confirm("Are you sure you want to delete base company?");
+        if (action != false) {
+            $.ajax({
+                url: '{% url "delete_base_company" %}',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.deleted) {
+                    $("#cltable #qt-" + id).remove();
+                    }
+                },
+                failure: function(d) {
+                    console.warn(d);
+                }
+            }); 
+        }
+    }
+
+
+$(document).on("click", ".add_item", function(){
+    var company_name = $('#company_name').val();
+    var address_1 = $('#address_1').val();
+    var address_2 = $('#address_2').val();
+    var email = $('#email').val();
+    var mobile = $('#mobile').val();
+    var website = $('#website').val();
+    var base_url = $('#base_url').val();
+    var files = $('#logo')[0].files[0];
+   // alert(website);
+    var fd = new FormData();
+    fd.append('company_name',company_name);
+    fd.append('address_1',address_1);
+    fd.append('address_2',address_2);
+    fd.append('email',email);
+    fd.append('mobile',mobile);
+    fd.append('website',website);
+    fd.append('base_url',base_url);
+    fd.append('logo_file',files);
+    fd.append('csrfmiddlewaretoken','{{ csrf_token }}');
+    console.log(fd);
+
+    if(!company_name){
+        alert('Please enter company name');
+    }
+  
+    else if(!base_url){
+        alert('Please enter base url');
+    }
+    else{
+
+    $.ajax({
+            url: "{% url 'add_base_company' %}",
+            type: "POST",  
+            data:  fd,
+            contentType: false,
+            cache: false,
+            processData:false, 
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                alert(data);
+            }
+        });
+    }
+
+});
+/*$(document).on("click", ".add_item", function(){
+    company_name = $('#company_name').val();
+    address_1 = $('#address_1').val();
+    address_2 = $('#address_2').val();
+    email = $('#email').val();
+    mobile = $('#mobile').val();
+    website = $('#website').val();
+
+    var fd = new FormData();
+    fd.append('first_name',first_name);
+    fd.append('company_name',company_name);
+    fd.append('address_1',address_1);
+    fd.append('address_2',address_2);
+    fd.append('email',email);
+    fd.append('mobile',mobile);
+    fd.append('website',website);
+    fd.append('base_company',base_company);
+    fd.append('csrfmiddlewaretoken','{{ csrf_token }}');
+    console.log(fd);
+
+    if(!company_name){
+        alert('Please enter company name');
+    }
+    else if(!address_1){
+        alert('Please enter address_1');
+    }
+    else if(!address_2){
+        alert('Please enter address_2');
+    }
+    else{
+
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'add_base_company' %}",
+            data: {
+             company_name : $('#company_name').val(),
+             address_1 : $('#address_1').val(),
+             address_2 : $('#address_2').val(),
+             email : $('#email').val(),
+             mobile : $('#mobile').val(),
+             website : $('#website').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                location.reload();
+         
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+             
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+
+});
+*/
+
+
+function editQuote(id) {
+    var action = confirm("Are you sure you want to edit this item?");
+    if (action != false) {
+        $.ajax({
+            type : "POST", 
+            url: "{% url 'edit_base_company' %}",
+            data: {
+            'id': id,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            dataType: "json",
+            },
+            success: function (data) {
+                $("#AddProductModal").modal("show"); 
+                $("#exampleModalLabel").text("Update Base Company");
+                $("#sub_button").text("Update Base Company");
+                $("#sub_button").removeClass("btn-primary add_item").addClass("btn-warning update_item");
+                $("#company_name").val(data.company_name);
+                $("#address_1").val(data.address_line_1);
+                $("#address_2").val(data.address_line_2);
+                $("#email").val(data.email);
+                $("#mobile").val(data.mobile);
+                $("#website").val(data.website);
+                $('#base_url').val(data.base_url);
+
+                $("#base_id").val(data.id);
+                console.log(data);
+            },
+            failure: function(d) {
+                console.warn(d);
+            }
+        }); 
+    }
+}
+
+
+$(document).on("click", ".update_item", function(){
+    var i_id = $('#base_id').val()
+    var company_name = $('#company_name').val();
+    var address_1 = $('#address_1').val();
+    var address_2 = $('#address_2').val();
+    var email = $('#email').val();
+    var mobile = $('#mobile').val();
+    var website = $('#website').val();
+    var base_url = $('#base_url').val();
+
+    var files = $('#logo')[0].files[0];
+   // alert(website);
+    var fd = new FormData();
+    fd.append('i_id',i_id);
+    fd.append('company_name',company_name);
+    fd.append('address_1',address_1);
+    fd.append('address_2',address_2);
+    fd.append('email',email);
+    fd.append('mobile',mobile);
+    fd.append('website',website);
+    fd.append('base_url',base_url);
+    fd.append('file',files);
+    fd.append('csrfmiddlewaretoken','{{ csrf_token }}');
+    console.log(fd);
+    if(!company_name){
+        alert('Please enter company name');
+    }
+    else if(!address_1){
+        alert('Please enter address_1');
+    }
+    else if(!address_2){
+        alert('Please enter address_2');
+    }
+    else{
+
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'update_base_company' %}",
+            data:  fd,
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+});
+
+
+</script>
+{% endblock %}
+
+

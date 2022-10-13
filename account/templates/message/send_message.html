@@ -1,0 +1,428 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+.search input {
+    height: 34px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4;
+}
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid blue;
+}
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+.search button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    height: 31px;
+    width: 110px;
+    background: blue;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Messages</h3>
+     
+          <a href="{% url 'all_companies'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Companies</a>
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                    <!-- <div class="search"> 
+                        <i class="fa fa-search"></i> 
+                        <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                        <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <textarea class="form-control" id="msg"></textarea>
+                                            <div class="col-12">
+                                                <input id="submit" class="btn btn-primary mt-2" type="button"  value="Send In Bulk"  />
+                                            </div>
+                                            <div id="success_message" class="alert alert-success mt-2" style="display:none"></div>
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                    <table id='cltable' class="table table-bordered table-striped table-hover" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th><input type="checkbox" id="selectallboxes"></th>
+                                                                <th>Id#</th>
+                                                                <th>Company Name</th>
+                                                                <th>Company Person</th>
+                                                                <th>Email</th>
+                                                                <th>Mobile</th>
+                                                                <th>Address</th>
+                                                                <th>Send</th>
+                                                               
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for us in companies %}
+                                                            <tr id="qt-{{us.id}}"> 
+                                                                <td><input type="checkbox" id="table_tr" class="checkboxes" name="checkboxes" value="{{us.id}}"></td>     
+                                                                <td> {{us.id}}</td>
+                                                                <td> {{us.company_name}}</td>
+                                                                <td>{{us.person}}</td>
+                                                                <td>{{us.email}}</td>
+                                                                <td>{{us.mobile}}</td>
+                                                                <td>{{us.address}}</td>
+                                            
+                                                                <td><input type="button" onClick="sendMessage({{us.id}})" name="Send" value="Send" class="btn btn-primary"></td> 
+                                                        
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                              
+                                                
+                                            </div>
+                                       
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </section>
+            </div>
+</div>
+
+
+
+{% comment %} <div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="search-box" id="b_search">
+                                <div class="lable">Description</div>
+                                <input type="text" class="brand form-control mo_val" id="i_desc" name="desc">
+                            </div>
+                            <div class="row">
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Rate</div>
+                                    <input type="number" class="pcode form-control mo_val" id="i_rate" >
+                                </div>
+                                <div class="search-box mt-2 col-md-4" id="c_search">
+                                    <div class="lable">Vat</div>
+                                    <input type="number" class="pcode form-control mo_val" value="0" id="i_vat" >
+                                    <input type="hidden" id="id_input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+        </div>
+         <div id="output"></div>
+        <div class="modal-footer">
+                 <input type="hidden" name="product_id" id="product_id" />
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button  id="sub_button" class="btn btn-primary add_item">Add Item</button>
+       </div>
+      
+    </div>
+    </div>
+</div> 
+{% endcomment %}
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $(document).on("click", "#submit", function(){
+            var tables = [];
+            $.each($("input[name='checkboxes']:checked"), function(){            
+                tables .push($(this).val());
+             });
+             console.warn(JSON.stringify(tables));
+             var msg = $('#msg').val();
+             //alert(msg);
+             $.ajax({
+                type : "POST", 
+                url: "{% url 'send_bulk_message' %}",
+                data:{tdata : JSON.stringify(tables) , msg: msg , csrfmiddlewaretoken:'{{ csrf_token }}' },
+             
+                success: function(data){
+                    console.log(data);
+                      testValue = (JSON.stringify(data.msg_report)).replaceAll("\"", "");
+                    $('.alert').text(testValue);
+                    $('.alert').show();
+                    location.reload();
+                },
+                failure: function() {
+                    
+                }
+            });
+         });
+
+        $('#cltable').DataTable({
+        });
+
+        $('#selectallboxes').click(function(event){
+            if(this.checked){
+                $('.checkboxes').each(function(){
+                    this.checked = true;                      
+                });
+            }
+            else{
+                $('.checkboxes').each(function(){
+                    this.checked = false;                      
+                });
+            }
+        });
+
+
+    /*    $.ajax({
+            type : "GET", 
+            url: "{% url 'send_message' %}",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                dataType: "json",
+            },
+            success: function(data){
+                //alert(data);
+                //console.log(data);
+            },
+            failure: function() {
+                
+            }
+        });
+*/
+    });
+ 
+    {% comment %} function sendMessage(id) {
+        var action = confirm("Are you sure you want to send Message?");
+        if (action != false) {
+            $.ajax({
+                type : "POST", 
+                url: "{% url 'send_message' %}",
+                data: {
+                    msg : $('#msg').val(),
+                    c_id : id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                },
+                success: function(data){
+                    location.reload();
+                    /*  $('#output').html(data.msg) 
+                    $('#AddProductModal').hide(); */
+                    $("#AddProductModal").modal("hide");  
+                    
+                    // getTotal();
+                    /* alert(data.msg);*/
+                },
+                failure: function() {
+                    
+                }
+            });
+        }
+    } {% endcomment %}
+    function sendMessage(id) {
+        var action = confirm("Are you sure you want to send Message?");
+        if (action != false) {
+            $.ajax({
+                type : "POST", 
+                url: "{% url 'send_message' %}",
+                data: {
+                    msg : $('#msg').val(),
+                    c_id : id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                },
+                success: function(data){
+                    testValue = (JSON.stringify(data.msg_report)).replaceAll("\"", "");
+                    $('.alert').text(testValue);
+                    $('.alert').show();
+                    console.log(data);
+                    //location.reload();
+                    /*  $('#output').html(data.msg) 
+                    $('#AddProductModal').hide(); */
+                    //$("#AddProductModal").modal("hide");  
+                    
+                    // getTotal();
+                    /* alert(data.msg);*/
+                },
+                failure: function() {
+                    
+                }
+            });
+        }
+    }
+
+
+{% comment %} 
+        function editQuote(id) {
+            var action = confirm("Are you sure you want to edit this item?");
+            if (action != false) {
+                $.ajax({
+                    type : "POST", 
+                    url: "{% url 'edit_all_item' %}",
+                    data: {
+                    'id': id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                    },
+                    success: function (data) {
+                        $("#AddProductModal").modal("show"); 
+                        $("#exampleModalLabel").text("Update Item");
+                        $("#sub_button").text("Update Item");
+                        $("#sub_button").removeClass("btn-primary add_item").addClass("btn-warning update_item");
+                        $("#i_desc").val(data.i_desc);
+                        $("#i_rate").val(data.rate);
+                        $("#i_vat").val(data.vat);
+                        $("#product_id").val(data.id);
+                        console.log(data);
+                    },
+                    failure: function(d) {
+                        console.warn(d);
+                    }
+                }); 
+            }
+    }
+   {% endcomment %}
+
+
+{% comment %} $(document).on("click", ".add_item", function(){
+    i_desc = $('#i_desc').val();
+    i_rate = $('#i_rate').val();
+    i_vat = $('#i_vat').val();
+
+    if(!i_desc){
+        alert('Please enter description');
+    }
+    else if(!i_rate){
+        alert('Please enter rate');
+    }
+    else if(!i_vat){
+        alert('Please enter vat');
+    }
+    else{
+
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'add_all_item' %}",
+            data: {
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+
+});
+
+
+$(document).on("click", ".update_item", function(){
+    i_desc = $('#i_desc').val();
+    i_rate = $('#i_rate').val();
+    i_vat = $('#i_vat').val();
+
+    if(!i_desc){
+        alert('Please enter description');
+    }
+    else if(!i_rate){
+        alert('Please enter rate');
+    }
+    else if(!i_vat){
+        alert('Please enter vat');
+    }
+    else{
+
+    $.ajax({
+            type : "POST", 
+            url: "{% url 'update_all_item' %}",
+            data: {
+             i_id : $('#product_id').val(),
+             i_desc : $('#i_desc').val(),
+             i_rate : $('#i_rate').val(),
+             i_vat : $('#i_vat').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             dataType: "json",
+            },
+            success: function(data){
+                location.reload();
+             /*  $('#output').html(data.msg) 
+                $('#AddProductModal').hide(); */
+                $("#AddProductModal").modal("hide");  
+                
+               // getTotal();
+               /* alert(data.msg);*/
+            },
+            failure: function() {
+                
+            }
+        });
+    }
+
+}); {% endcomment %}
+
+
+</script>
+{% endblock %}
+
+

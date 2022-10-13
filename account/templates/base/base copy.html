@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALNOKHATHA Security Solutions</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    {% comment %} <link rel="stylesheet" href="/assets/admin_panel/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/admin_panel/vendors/iconly/bold.css">
+
+    <link rel="stylesheet" href="/assets/admin_panel/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="/assets/admin_panel/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="/assets/admin_panel/css/app.css">
+    <link rel="stylesheet" href="/assets/admin_panel/css/custom.css">
+    <link rel="shortcut icon" href="/assets/admin_panel/images/favicon.svg" type="image/x-icon"> {% endcomment %}
+
+{% comment %} <link href='/assets/admin_panel/DataTables/datatables.min.css' rel='stylesheet' type='text/css'> {% endcomment %}
+{% comment %} <script src="/assets/admin_panel/js/jquery.js"></script> {% endcomment %}
+{% comment %} <link href="/assets/admin_panel/css/jqueryui.css" rel="stylesheet"> {% endcomment %}
+{% comment %} <script src="/assets/admin_panel/js/jqueryui.js"></script> {% endcomment %}
+{% comment %} <script src="/assets/admin_panel/DataTables/datatables.min.js"></script> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'admin_panel/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/vendors/iconly/bold.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/vendors/perfect-scrollbar/perfect-scrollbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/vendors/bootstrap-icons/bootstrap-icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/css/app.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/css/custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'admin_panel/images/favicon.svg' %}" />
+    <script src="{% static 'admin_panel/js/jquery.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script> 
+
+{% block head %}
+
+{% endblock %}
+</head>
+<body>
+  {% comment %} <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="adjust-nav">
+             
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                    
+                            <li class="welcome"> Welcome :  kasim &nbsp; </li>
+                            <li><a href="add-invoice.php">Add Invoice</a></li>
+                        
+                            <li><a href="logout.php">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+    </div> {% endcomment %}
+
+            <div id="sidebar" class="active">
+                <div class="sidebar-wrapper active">
+                        <div class="sidebar-header">
+                            <div class="d-flex justify-content-between">
+                                <div class="logo">
+                                   <a href=""><img src="/static/" alt="Logo" srcset="" style="height:46px"></a>
+                                </div>
+                                <div class="toggler">
+                                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-menu">
+                            <ul class="menu">
+                                <li class="sidebar-title"><b>Typing V 1.2</b></li>
+                                <li class="sidebar-title"><b>Welcome : </b></li>
+                                <li class="sidebar-item active ">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-grid-fill"></i>
+                                        <span>Dashboard</span>
+                                    </a>
+                                </li>
+                                
+                          <li class="sidebar-item  has-sub">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-stack"></i>
+                                        <span>Typing</span>
+                                    </a>
+                                    <ul class="submenu ">
+                                        {% comment %} {% if base_profile.role == "admin" %} {% endcomment %}
+                                        <li class="submenu-item ">
+                                            <a href="">Quotations</a>
+                                        </li>
+                                        {% comment %} {% endif %} {% endcomment %}
+                                        <li class="submenu-item ">
+                                            <a href="">Create Quotation</a>
+                                        </li>
+                                        {% comment %} {% if base_profile.role == "admin" %} {% endcomment %}
+                                        <li class="submenu-item ">
+                                            <a href="">Invoices</a>
+                                        </li>
+                                        {% comment %} {% endif %} {% endcomment %}
+                                        <li class="submenu-item ">
+                                            <a href="">Create Invoice</a>
+                                        </li>
+
+                                        <li class="submenu-item ">
+                                            <a href="">All Items</a>
+                                        </li>
+
+                                        <li class="submenu-item ">
+                                            <a href="">All Companies</a>
+                                        </li>
+                                    </ul>
+                            </li> 
+
+                        {% comment %} {% if base_profile.role == "admin" %} {% endcomment %}
+                          <li class="sidebar-item">
+                                    <a href="" class='sidebar-link'>
+                                        <i class="bi bi-chat-right-text-fill"></i>
+                                        <span>Message System</span>
+                                    </a>
+                            </l i> 
+                          <li class="sidebar-item  has-sub">
+                                    <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-app-indicator"></i>
+                                        <span>Management</span>
+                                    </a>
+                                    <ul class="submenu ">
+                                        <li class="submenu-item ">
+                                            <a href="{% url 'users'%}">Users</a>
+                                        </li>
+                                        <li class="submenu-item ">
+                                            <a href="">Base Companies</a>
+                                        </li>
+                                    </ul>
+                            
+                            </li> 
+                        {% comment %} {% endif %}
+                                {% if base_profile.role == "admin" %}     {% endcomment %}
+                                <li class="sidebar-item">
+                                    <a href="" class='sidebar-link'>
+                                        <i class="bi bi-gear"></i>
+                                        <span>Setting</span>
+                                    </a>
+                                </li>
+                                {% comment %} {% endif %} {% endcomment %}
+                                <li class="sidebar-item">
+                                    <a href="{% url 'logout' %}" class='sidebar-link'>
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                    </div>
+                </div>
+{% block content %}{% endblock %}
+        <script src="{% static 'admin_panel/vendors/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+        <script src="{% static 'admin_panel/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'admin_panel/vendors/apexcharts/apexcharts.js' %}"></script>
+        <script src="{% static 'admin_panel/js/pages/dashboard.js' %}"></script>
+        <script src="{% static 'admin_panel/js/main.js' %}"></script>
+</body>
+</html>

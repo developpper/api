@@ -1,0 +1,160 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+.search {
+    position: relative;
+    box-shadow: 0 0 40px rgba(51, 51, 51, .1)
+}
+.search input {
+    height: 34px;
+    text-indent: 25px;
+    border: 2px solid #d6d4d4
+}
+.search input:focus {
+    box-shadow: none;
+    border: 2px solid blue
+}
+.search .fa-search {
+    position: absolute;
+    top: 20px;
+    left: 16px
+}
+.search button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    height: 31px;
+    width: 110px;
+    background: blue;
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+   
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Quotaions</h3>
+      
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'create_quotation' %}"  class="btn btn-primary float-left btn-sm pr-5" >Create Quotaion</a>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <!-- <input type="search" id="form1" class="form-control float-right btn-sm pr-5 " /> -->
+                    <!-- <div class="search"> 
+                        <i class="fa fa-search"></i> 
+                        <input type="text" class="form-control" id="quote_input" placeholder="Enter Quotation Id"> 
+                        <button class="btn btn-primary btn-sm" id="quote_id">Search</button> 
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <table id='cltable' class="table table-bordered table-striped table-hover" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sr#</th>
+                                                            <th>Id#</th>
+                                                            <th>Date</th>
+                                                            <th>Company</th>
+                                                            <th>Remarks</th>
+                                                            <th>Created By</th>
+                                                            <th>Total Amount</th>
+                                                            {% if base_profile.role == "admin" %}
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                            {% endif %}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for us in quotation %}
+                                                        <tr id="qt-{{us.id}}">      
+                                                            <td> {{us.id}}   </td>
+                                                            <td> <a href="/typing/quotation/{{us.q_slug}}">{{us.quote_num}}   </a></td>
+                                                            <td>{{us.created_at}}</td>
+                                                            <td>{{us.company_name}}</td>
+                                                            <td>{{us.remarks}}</td>
+                                                            <td>{{us.user}}</td>
+                                                            <td>{{us.total_inc_vat}}</td>
+                                                            {% if base_profile.role == "admin" %}
+                                            
+
+                                                            <td><input type="button" onclick="window.location.href='/typing/edit-quotation/{{us.q_slug}}'" name="Edit" value="Edit" class="btn btn-warning"></td> 
+                                                           
+                                                            <td><input type="button" onClick="deleteQuote({{us.id}})" name="Delete" value="Delete" class="btn btn-danger"></td> 
+
+                                                            {% endif %}
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                </div>
+            </section>
+            </div>
+</div>
+
+<script>    
+ $(document).ready(function(){
+    $('#cltable').DataTable({
+        "order": [[ 0, "desc" ]]
+    });
+ });
+
+ function deleteQuote(id) {
+        var action = confirm("Are you sure you want to delete this quotation?");
+        if (action != false) {
+            $.ajax({
+                url: '{% url "delete_quote" %}',
+                data: {
+                    'id': id,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // alert(data);
+                    if (data.deleted) {
+                    $("#cltable #qt-" + id).remove();
+                    }
+                }
+            });
+        }
+}
+</script>
+{% endblock %}
+
+

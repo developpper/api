@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    
+    }
+
+    td, th {
+      border: 3px solid #dddddd;
+      text-align: left;
+      padding: 5px;
+    }
+    
+</style>
+
+</head>
+
+<body>
+	<pdf:language name="arabic"/> 
+ 
+	<h1 style="text-align: center; font-size: 25px;">Invoice Report </h1>
+
+      <img src="/assets/{{base_company.logo}}" style="width:200px;">
+      <h1 style="margin-left:500px; padding-top:-60px;">From : {{from}}</h1> <h1 style="margin-left:500px"> To : {{to}}</h1>
+
+ <br> <br>
+ 
+
+
+
+ <h1>Prepared By : <span style="color:red">{{user}}</span></h1>
+ <h1>Total Amount Paid By Bank : <span style="color:red">{{by_bank}}</span></h1>
+ <h1>Total Amount Paid By Cash : <span style="color:red">{{by_cash}}</span></h1>
+ <h1>Grand Total Amount : <span style="color:red">{{total}}</span></h1>
+<br> <br>
+  {% for i in quotation  %}
+    <h2>Invoice : {{i.quote_num }}   | #Id : {{i.q_slug}} |  Date & Time : {{i.created_at}}  | Company : {{i.company_name}} | Paid By : {{i.q_p_by}}</h2>
+  <table>
+    <tr style="font-weight:500;font-size: 12px; background-color:#FFFFCC; ">
+      <th>Sr:</th>
+      <th>Desc</th>
+      <th>Qty</th>
+      <th>Rate</th>
+      <th>Vat</th>
+      <th>Total</th>
+    </tr>
+  
+  {% for q in i.invoice_entry_saved_set.all %}
+  <tr>
+  <td>{{forloop.counter }}</td>
+  <td>{{q.desc}}</td>
+  <td>{{q.qty}}</td>
+  <td>{{q.rate}}</td>
+  <td>{{q.vat}}</td>
+  <td>{{q.total_inc_vat}}</td>
+
+</tr>
+
+
+{% endfor %}  
+
+<tr style="font-weight:500;font-size: 12px;background-color:#FFFFCC; ">
+  <td colspan="4"></td>
+  <td>Total Amount</td>
+  <td>{{i.total_inc_vat}}</td>
+
+</tr>
+
+
+      </table>
+      <br><br><br>
+  {% endfor %}
+
+
+
+   <br>
+  
+      <br>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+{% extends "base/base.html" %}
+
+{% block head %}
+
+<style>
+    #table1 {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      #table1 td, #table1 th {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      
+      #table1 tr:nth-child(even){background-color: #f2f2f2;}
+      
+      #table1 tr:hover {background-color: #ddd;}
+      
+      #table1 th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+      }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+     <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+      
+        <div class="page-heading">
+        <div id="success_div"></div>
+            <h3>Create Invoice</h3>
+            <a href="{% url 'create_quotation'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >Create Quotation</a>
+            <a href="{% url 'all_items'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >All Items</a>
+            <a href="{% url 'invoices'%}" id="app_pro_btn"  class="btn btn-primary float-left btn-sm pr-5" >All Invoices</a>
+            {% comment %}    <a href="#" data-bs-toggle="modal" data-bs-target="#AddCatModal" class="btn btn-primary float-left btn-sm" style="margin-left:10px">Add Category</a>
+            {% endcomment %}
+        </div>
+        <div class="page-content">
+            <section class="row">
+                <div class="col-12 col-lg-12">
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">      
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group mb-3">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <h5> Invoice : <span id="q_no"></span> </h5>
+                                                        </div>
+                                                        <div class="col-4">
+
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="search-box" id="com_name">
+                                                                <input type="text" id="comp_name" class="brand form-control" name="c_name" placeholder="Company Name" autocomplete="off">
+                                                                <div class="result"></div>
+                                                            </div>
+                                                            <div class="search-box mt-3" id="c_search">
+                                                                <input type="text" class="pcode form-control" name="p_code" id="cus_name" placeholder="Person Name">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="model">
+                                                                <input type="text" class="pmodel form-control" name="p_model" id="cus_mail" placeholder="Email">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="model">
+                                                                <input type="text" class="pmodel form-control" name="p_model" id="cus_mob" placeholder="Mobile Number">
+                                                            </div>
+                                                            <div class="search-box mt-3" id="model">
+                                                                <input type="text" class="pmodel form-control" name="cus_address" id="cus_address" placeholder="Address">
+                                                            </div>
+                                                            <div class="search-box mt-3">
+                                                                <select class="form-control input-sm" id="pay_m" name="pay_method">
+                                                                  <option value="cash">By Cash</option>
+                                                                  <option value="credit">By Credit</option>
+                                                                  <option value="bank">By Bank</option>
+                                                                </select>
+                                                              </div>
+                                                              <div class="search-box mt-3" hidden>
+                                                                  <div class="row">
+                                                                    <div class="col-md-6"> 
+                                                                    <p>Send Message </p>
+                                                                    </div>
+                                                                    <div class="col-md-6"> 
+                                                                        <div class="switchToggle">
+                                                                            <input type="checkbox" name="recipients" id="switch1" >
+                                                                            <label for="switch1">Toggle</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                              </div>
+                                                        </div>
+                                                    </div>  
+                                                    <a href="#" id="app_pro_btn"  data-bs-toggle="modal" data-bs-target="#AddProductModal"  class="btn btn-primary float-left btn-md pr-5" >Add Item</a>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div id="success_message" class="alert alert-success" style="display:none"></div>
+                                    <hr>
+
+                                    <table  id="table1">
+                                        <tr>
+                                            <th>Sr</th>
+                                            <th>Description</th>
+                                            <th>Qty</th>
+                                            <th>Rate</th>
+                                            <th>Exc Vat</th>
+                                            <th>Vat</th>
+                                            <th>Vat Amount</th>
+                                            <th>Total Inc Vat</th>
+                                            <th>Cost</th>
+                                            <th>Total Cost</th>
+                                            <th>Profit</th>
+                                            <th>Del</th>
+                                        </tr>
+                                     
+                                        <tfoot>
+                                            <tr style="height:50px">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                              <th colspan="4"> <span style="display:table;margin:0 auto;"> Total Invoice Value </span></th>
+                                              <th id="t_exe"></th>
+                                              <th ></th>
+                                              <th id="q_vat"></th>
+                                              <th colspan="" id="t_inc_vat"></th>
+                                              <th colspan="" id="t_cost"></th>
+                                              <th colspan="" id="t_t_cost"></th>
+                                              <th colspan="" id="total_profit"></th>
+                                              <th></th>
+                                            </tr>
+                                        </tfoot>
+
+
+                                      </table>
+
+                                      <div class="col-6 mt-5">
+                                         <span>Remarks</span>
+                                            <textarea class="form-control" id="remarks" rows="3"></textarea>
+                                      </div>
+
+
+
+                                    <a href="#" id="save_bill" class="btn btn-primary btn-md pr-5 mt-5" style="width:15vw; margin-left:79%">Print</a>        
+                             </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        
+                    </div>
+                </div>
+             
+            </section>
+            </div>
+    
+   
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+    <div class="modal-content">
+    {% comment %} <form id="add_pro_form"> {% endcomment %}
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">                   
+                <div class="form-group mb-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="search-box" id="desc">
+                                <div class="lable">Description</div>
+                                <input type="text" class="brand form-control mo_val" id="i_desc" name="desc" autocomplete="off">
+                                <div class="result"> </div>
+                            </div>
+                        </div>
+                        <div class="search-box col-md-4" id="c_search">
+                            <div class="lable">Qty</div>
+                            <input type="number" class="pcode form-control mo_val" id="i_qty" value="1">
+                        </div>
+
+                        <div class="search-box col-md-4" id="price_div" hidden>
+                            <div class="lable">Price</div>
+                            <input type="number" class="pcode form-control mo_val" id="i_price" val="">
+                        </div>
+
+                        <div class="search-box col-md-4" id="cost_div" hidden>
+                            <div class="lable">Cost</div>
+                            <input type="number" class="pcode form-control mo_val" id="i_cost" val="">
+                        </div>
+                            {% comment %} <input type="hidden" class="pcode form-control mo_val" id="i_rate"> {% endcomment %}
+                            <input type="hidden" class="pcode form-control mo_val" id="i_vat">
+
+                    </div>
+                </div>
+        </div>
+         <div id="output"></div>
+        <input type="hidden" name="product_id" id="product_id" />
+        <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Close</button>
+                <button id="add_qitem" name="add-product" class="btn btn-primary add_product">Add Item</button>
+       </div>
+        {% comment %} </form> {% endcomment %}
+    </div>
+    </div>
+</div>
+
+<div id="result"></div>
+
+
+<script>
+
+$(document).ready(function () {
+
+        myFunction();
+        function myFunction() {  
+        $('.t_roe').remove(); 
+        $.ajax({
+            url: "{% url 'get_i_item' %}",
+            type: 'get',
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                $.each(result.data, function(index, value){
+                    var ex_vat = value.qty * value.rate;
+                    var vat_amt = ex_vat * (value.vat / 100);
+                    var total_inc_vat = ex_vat + vat_amt;
+                    var total_cost = value.qty * value.cost;
+                    var profit = total_inc_vat - total_cost;
+                    var html = "<tr class='t_roe table_tr'><td>"+(index+1)+"</td><td class='q_desc'>"+value.desc+"</td><td class='q_qty'>"+value.qty+"</td><td class='q_rate'>"+parseFloat(value.rate).toFixed(2)+"</td><td class='ex_vat'>"+parseFloat(ex_vat).toFixed(2)+"</td><td class='v_vat'>"+value.vat+"</td><td class='vat_amt'>"+parseFloat(vat_amt).toFixed(2)+"</td><td class='t_in_vat'>"+parseFloat(total_inc_vat).toFixed(2)+"</td><td class='t_cost'>"+parseFloat(value.cost).toFixed(2)+"</td><td class='t_t_cost'>"+parseFloat(total_cost).toFixed(2)+"</td><td class='t_profit'>"+parseFloat(profit).toFixed(2)+"</td><td class='.q_del'><button class='btn btn-sm btn-danger delete-item' data-item="+value.id+">del</button></td></tr>";
+                    $("#table1").find('tbody').append(html);
+                });
+                year = new Date().getFullYear();
+                $('#q_no').text('IN/'+year+'/'+JSON.stringify(result.data2.l_id+1));
+                $('#t_exe').text((result.data2.t_vat).toFixed(2));
+                $('#q_vat').text((result.data2.vat_amt).toFixed(2));
+                $('#t_inc_vat').text((result.data2.grand_total).toFixed(2));
+                $('#t_t_cost').text((result.data2.total_cost).toFixed(2));
+                $('#total_profit').text((result.data2.total_profit).toFixed(2));
+            }
+        });
+    }
+
+
+    $(document).on("click", "#add_qitem", function(){
+        i_desc = $('#i_desc').val();
+        i_qty = $('#i_qty').val();
+        if (!i_qty){
+            alert('please enter qty')
+        }
+        else{
+       // alert(i_desc);
+        $.ajax({
+                type : "POST", 
+                url: "{% url 'add_i_item' %}",
+                data: {
+                 i_desc : $('#i_desc').val(),
+                 i_rate : $('#i_price').val(),
+                 i_qty : $('#i_qty').val(),
+                 i_vat : $('#i_vat').val(),
+                 i_cost : $('#i_cost').val(),
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 dataType: "json",
+                },
+                success: function(data){
+                    $("#AddProductModal").modal("hide");  
+                    $(".mo_val").val(''); 
+                    myFunction();
+                   // getTotal();
+                   // alert(data.msg); 
+                },
+                failure: function(){
+                }
+            }); 
+        }
+    });
+
+      	// Delete item from cart
+          $(document).on('click','.delete-item',function(){
+            var _pId=$(this).attr('data-item');
+            var _vm=$(this);
+            // Ajax
+            $.ajax({
+                url:"{% url 'delete_i_item' %}",
+                data:{
+                    'id':_pId,
+                },
+                dataType:'json',
+                beforeSend:function(){
+                    _vm.attr('disabled',true);
+                },
+                success:function(res){
+                    console.log(res);
+                    _vm.attr('disabled',false);
+                    myFunction();
+                   // getTotal();
+                }
+            });
+            // End
+        });
+
+
+        $('#save_bill').click(function(e){
+ 
+            // alert(grecaptcha.getResponse());
+         e.preventDefault();
+            var com_name = $('#comp_name').val();
+            var cus_name = $('#cus_name').val();
+            var cus_mob = $('#cus_mob').val();
+            var cus_mail = $('#cus_mail').val();
+            var cus_address = $('#cus_address').val();
+            var pay_m = $('#pay_m').val();
+            var q_num = $('#q_no').text();
+            var t_exe = $('#t_exe').text();
+            var q_vat = $('#q_vat').text();
+            var t_inc_vat = $('#t_inc_vat').text();
+            var total_from_t_cost = $('#t_t_cost').text();
+            var total_from_profit = $('#total_profit').text();
+            var remark = $('#remarks').val();
+            var tables = new Array();
+            $(".table_tr").each(function () {
+                var table = {};
+                table.q_desc = $(this).find(".q_desc").text();
+                table.q_qty = $(this).find(".q_qty").text();
+                table.q_rate = $(this).find(".q_rate").text();
+                table.ex_vat = $(this).find(".ex_vat").text();
+                table.v_vat = $(this).find(".v_vat").text();
+                table.vat_amt = $(this).find(".vat_amt").text();
+                table.t_in_vat = $(this).find(".t_in_vat").text();
+                table.t_cost = $(this).find(".t_cost").text();
+                table.t_t_cost = $(this).find(".t_t_cost").text();
+                table.t_profit = $(this).find(".t_profit").text();
+                tables.push(table);
+            });
+            //console.log(tables);
+            console.warn(JSON.stringify(tables));
+            if( com_name == '' ) {
+                $('.alert').text('Please enter company name!');
+                $('.alert').show();
+            }
+        
+        else{
+        var action = confirm("Are you sure you want to save this invoice?");
+            if (action != false) {
+                $('#switch1').click(function() {
+                    var checkBoxes = $("input[name=recipients\\[\\]]");
+                    checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+                 
+                });
+                if ($('#switch1').prop('checked')) {
+                    var msg = 'yes';
+                }
+                else {
+                    var msg = 'no';
+                } 
+                //alert(msg);
+            $.ajax({
+              type:'POST',
+              url:"{% url 'save_i_item' %}",
+              data:{tdata : JSON.stringify(tables) , com_name:com_name , cus_name:cus_name , cus_mail:cus_mail , cus_mob:cus_mob , q_num:q_num , cus_address:cus_address , pay_m:pay_m ,  t_exe:t_exe , q_vat:q_vat , t_inc_vat:t_inc_vat , total_from_t_cost:total_from_t_cost , total_from_profit:total_from_profit , remark:remark , msg:msg , csrfmiddlewaretoken:'{{ csrf_token }}' },
+              success:function(data)
+              {  
+                    console.log(data);
+                    testValue = (JSON.stringify(data.msg)).replaceAll("\"", "");
+                    $('.alert').text(testValue);
+                    $('.alert').show();
+                    // window.location.href = '/quotation/'+data.response_link;
+                    if(data.status == 200){       
+                        myFunction();  
+                        window.location.href = '/typing/invoice/'+data.slug;
+                     }
+              }
+        });
+                } 
+            }
+      
+      
+      
+        }); 
+
+
+        $("#i_desc").keyup(function(){
+            var search_data = $(this).val();
+            $("#desc").find('.result').empty();
+            if(search_data.length){
+                $.ajax({
+                    type : "POST", 
+                    url:"{% url 'search_all_item' %}",
+                    data: {
+                    search_data : search_data,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                    },
+                    success: function(result){  
+                        console.log(result);
+                    $.each(result.data, function(index, value){
+                        var html = '<div class="item_d"><p><span id="desc_val">'+(value.desc)+'</span>  -  <span style="color:red">'+(value.rate)+'</span></p><input type="hidden" id="item_id" name="item_id" value="'+(value.id)+'"><input type="hidden" id="item_rate" value="'+(value.rate)+'"><input type="hidden" id="item_vat" value="'+(value.vat)+'"><input type="hidden" id="item_cost" value="'+(value.cost)+'"><input type="hidden" id="editable" value="'+(value.editable)+'"></div>';
+                         $("#desc").find('.result').append(html);
+                        //alert(result);
+                        }); 
+                    // alert(data.msg);
+                    },
+                    failure: function() {
+                        $("#desc").find('.result').empty();
+                    }
+                });
+            } else{
+
+            } 
+        });
+
+        $(document).on("click", ".item_d", function(){
+          var item_desc =  $(this).find("#desc_val").text();
+          var item_id =  $(this).find("#item_id").val();
+          var item_rate =  $(this).find("#item_rate").val();
+          var item_vat =  $(this).find("#item_vat").val();
+          var editable =  $(this).find("#editable").val();
+          var item_cost =  $(this).find("#item_cost").val();
+
+          if (editable=='true'){
+            $('#price_div').removeAttr('hidden');
+            $("#i_price").val(item_rate);
+            $('#cost_div').removeAttr('hidden');
+            $("#i_cost").val(item_cost);
+          }
+          else{
+            $("#price_div").attr("hidden",true);
+            $("#i_price").val(item_rate);
+            $('#cost_div').attr("hidden",true);
+            $("#i_cost").val(item_cost);
+          }
+          $("#i_desc").val(item_desc);
+        //  $("#i_rate").val(item_rate);
+          $("#i_vat").val(parseInt(item_vat));
+          $("#desc").find('.result').empty();
+        });  
+
+
+        $("#comp_name").keyup(function(){
+            var search_data = $(this).val();
+            $("#com_name").find('.result').empty();
+            if(search_data.length){
+                $.ajax({
+                    type : "POST", 
+                    url:"{% url 'search_company' %}",
+                    data: {
+                    search_company : search_data,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    dataType: "json",
+                    },
+                    success: function(result){  
+                        console.log(result);
+                    $.each(result.data, function(index, value){
+                      
+                        
+                        var html = '<div class="item_c"><p>'+(value.company_name)+'</p><input type="hidden" id="c_person" name="item_id" value="'+(value.person)+'"><input type="hidden" id="c_email" value="'+(value.email)+'"><input type="hidden" id="c_mob" value="'+(value.mobile)+'"><input type="hidden" id="c_address" value="'+(value.address)+'"></div>';
+                         $("#com_name").find('.result').append(html);
+                  
+                        //alert(result);
+                    }); 
+                    // alert(data.msg);
+                    },
+                    failure: function() {
+                        $("#com_name").find('.result').empty();
+                    }
+                });
+            } else{
+            } 
+        });
+
+
+        $(document).on("click", ".item_c", function(){
+            var comp =  $(this).find("p").text();
+            var c_person =  $(this).find("#c_person").val();
+            var c_email =  $(this).find("#c_email").val();
+            var c_mob =  $(this).find("#c_mob").val();
+            var c_address =  $(this).find("#c_address").val();
+
+            $("#comp_name").val(comp);  
+            $("#cus_name").val(c_person);   
+            $("#cus_mail").val(c_email); 
+            $("#cus_mob").val(c_mob); 
+            $("#cus_address").val(c_address);
+
+            $("#com_name").find('.result').empty();
+          });  
+
+})
+
+
+
+</script>
+{% endblock %}
+
+

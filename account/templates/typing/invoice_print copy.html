@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>typingvisa Quotation pdf</title>
+		<style>
+			 .invoice-box {
+				max-width: 800px;
+				margin: auto;
+				padding: 0 30px 30px 30px;
+				border: 1px solid #eee;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			} 
+			 .invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+			} 
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: bottom;
+			}
+			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+			.invoice-box table tr.top table td {
+				{% comment %} padding-bottom: 20px; {% endcomment %}
+			}
+			{% comment %} .invoice-box table tr.top table td.title {
+				font-size: 5px;
+				line-height: 15px;
+				color: #333;
+			} {% endcomment %}
+			.invoice-box table tr.information table td {
+				{% comment %} padding-bottom: 40px; {% endcomment %}
+			}
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+			}
+			.invoice-box table tr.details td {	
+				{% comment %} padding-bottom: 20px; {% endcomment %}
+			}
+			.invoice-box table tr.item td {
+				border-bottom: 1px solid #eee;
+			}
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
+			.invoice-box table tr.total td:nth-child(2) {
+				border-top: 2px solid #eee;
+				font-weight: bold;
+			}
+			@media only screen and (max-width: 600px) {
+				.invoice-box table tr.top table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+				.invoice-box table tr.information table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+			}
+			/** RTL **/
+			.invoice-box.rtl {
+				direction: rtl;
+				font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+			}
+			.invoice-box.rtl table {
+				text-align: right;
+			}
+			.invoice-box.rtl table tr td:nth-child(2) {
+				text-align: left;
+			}
+            .head_p td{
+                font-size:12px;
+                font-weight: 600;
+				color:white;
+				text-align: center;
+				background-color:#1f5664;
+				padding-top:100px;
+            }
+            .foot_p td{
+                font-size:12px;
+                font-weight: 600;
+				color:white;
+				text-align: center;
+				background-color:#1f5664;
+            }
+		</style>
+	</head>
+
+	<body>
+        <h1 style="text-align: center; font-size: 25px;">Invoice</h1>
+		<div class="invoice-box">
+			<table cellpadding="0" cellspacing="0">
+				<tr class="top">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td class="title">
+									<img src="/assets/img/logo.png" style="width: 100%; max-width: 300px margin-top: -50px; " />
+								</td>
+								<td style="margin-left:150px; font-size:13px; font-weight:600;">
+									Invoice #: {{quotation.quote_num}}<br />
+									Date    : {{quotation.created_at|date:"d M, Y" }}<br />
+									ID    : {{quotation.q_slug}}<br />
+									Paid By : {{quotation.q_p_by}} 
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+				<tr class="information">
+					<td colspan="2">
+						<table>
+							<tr>
+								<td style="font-size:13px; font-weight:600;">
+									Al KHIDHMA AL THABIA TYPING <br /> 
+									Thasheel Roundabout<br />
+									Alsaja Industiral Area, Sharjah <br />
+									www.typingvisa.ae <br />
+									+971-563800082
+								</td>
+								<td style="font-size:13px;">
+									<span style="font-weight: 600;">Company : {{company.company_name|default_if_none:""}}<br /></span>
+									Company Person : {{company.person|default_if_none:""}} <br />
+									Email : {{company.email|default_if_none:""}} <br />
+									Mobile : {{company.mobile|default_if_none:""}} <br/> 
+									Address : {{company.address|default_if_none:"" }} <br/> 
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+            <table class="table-bordered">
+                    <tr class="head_p" > 
+                        <td >Sr</td>
+                        <td colspan="3">Description</td>
+                        <td>Qty</td>
+                        <td>Rate</td>
+                        <td>Amount Ex Vat</td>
+                        <td>Vat Rate</td>
+                        <td>Vat Amount</td>
+                        <td colspan="2">Total Amount Inc Vat</td>
+                    </tr>
+                <tbody>
+                	{% for i in quotation.invoice_entry_saved_set.all %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td  colspan="3">{{i.desc}}</td>
+                            <td>{{i.qty}}</td>
+                            <td>{{i.rate}}</td>
+                            <td>{{i.ex_vat}}</td>
+                            <td>{{i.vat}}</td>
+                            <td>{{i.vat_amount}}</td>
+                            <td colspan="2" style="text-align: center;">{{i.total_inc_vat}}</td>
+                        </tr>
+                    {% endfor %} 
+					<tr style="height:50px;"></tr>
+                 	<tr class="foot_p">
+                        <td colspan="6" style="font-weight: 600; text-align:center;">Total Invoice Value</td>
+                        <td  class="text-right" style="font-weight: 600;">{{quotation.total_exc_vat}}</td>
+                        <td style="font-weight: 600;">  </td>
+                        <td style="font-weight: 600;">{{quotation.total_vat_amt}}</td>
+                        <td colspan="2" style="font-weight: 600;">{{quotation.total_inc_vat}}</td>
+                    </tr>
+                </tbody>
+            </table>
+			
+		</div>
+		<div>
+		
+
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<br> <br>
+			<h2>For Typing Visa </h2>
+			<h2 style="margin-left:500px; padding-top:-32px;">Customer's Approval		 </h2>
+		</div>
+	</body>
+
+</html>
